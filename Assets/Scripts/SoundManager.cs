@@ -6,6 +6,7 @@ public class SoundManager : MonoBehaviour
 {
     // All Serialize Fields should be set to as null to stop warning
     [SerializeField] private AudioSource startJingle = null;
+    [SerializeField] private AudioSource mainMusic = null;
 
     // Start is called before the first frame update
     void Start() {
@@ -15,5 +16,9 @@ public class SoundManager : MonoBehaviour
     // Update is called once per frame
     void Update() {
         
+        if (!startJingle.isPlaying && !mainMusic.isPlaying) {
+            mainMusic.Play();
+        }
+
     }
 }
