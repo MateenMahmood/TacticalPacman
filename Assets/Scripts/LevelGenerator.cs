@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
+    //TEST
     // Start is called before the first frame update
     void Start() {
         
