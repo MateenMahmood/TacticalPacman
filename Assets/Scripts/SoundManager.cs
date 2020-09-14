@@ -8,7 +8,6 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource startJingle = null;
     [SerializeField] private AudioSource mainMusic = null;
 
-    //Test
     // Start is called before the first frame update
     void Start() {
         startJingle.Play();
