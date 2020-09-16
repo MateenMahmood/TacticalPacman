@@ -33,6 +33,8 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private GameObject outerWall = null;
     [SerializeField] private GameObject outerWallCorner = null;
     [SerializeField] private GameObject tJWall = null;
+    [SerializeField] private GameObject pellet = null;
+    [SerializeField] private GameObject powerPellet = null;
 
     // Start is called before the first frame update
     void Start() {
@@ -288,11 +290,15 @@ public class LevelGenerator : MonoBehaviour
                     
                     case 5:
                         // Pellet
+                        if (i != 14) {
+                            Instantiate(pellet, startPos, Quaternion.identity, parentWallObject.transform);
+                        }
                         startPos.x += objectSize.x;
                         break;
 
                     case 6:
                         // Power Pellet
+                        Instantiate(powerPellet, startPos, Quaternion.identity, parentWallObject.transform);
                         startPos.x += objectSize.x;
                         break;
 
