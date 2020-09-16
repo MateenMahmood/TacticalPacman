@@ -548,6 +548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51531e49396d99c40bd0546b95bf3365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentWallObject: {fileID: 1474175170}
   innerWall: {fileID: 7291298820426017911, guid: 54b2e3e401b1d244db3ec600bc76f965,
     type: 3}
   innerWallCorner: {fileID: 321883351659855856, guid: 78c9027049129544caea2df72ea12f42,

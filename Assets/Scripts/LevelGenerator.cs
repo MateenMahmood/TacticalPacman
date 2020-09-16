@@ -26,6 +26,7 @@ public class LevelGenerator : MonoBehaviour
 
     Vector3 objectSize;
 
+    [SerializeField] private GameObject parentWallObject = null;
     [SerializeField] private GameObject innerWall = null;
     [SerializeField] private GameObject innerWallCorner = null;
     [SerializeField] private GameObject outerWall = null;
@@ -35,7 +36,11 @@ public class LevelGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         objectSize = outerWall.GetComponent<Renderer>().bounds.size;
+        GenOneQuad();
+        
+    }
 
+    void GenOneQuad() {
         // Loop over every element in the array        
         for(int i = 0; i < levelMap.GetLength(0); i++) {
             for (int j = 0; j < levelMap.GetLength(1); j++) {
@@ -118,16 +123,12 @@ public class LevelGenerator : MonoBehaviour
                         if (i != 0) {
                             if (levelMap[i-1,j] == 1 || levelMap[i-1,j] == 2) {
 
-                                startPos.y -= objectSize.y;
-                                Instantiate(outerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 90)));
-                                startPos.x += objectSize.x;
-                                startPos.y += objectSize.y;
+                                GenBotLeft(outerWall);
                                 break;
                             }
                         }
 
-                        Instantiate(outerWall, startPos, Quaternion.identity);
-                        startPos.x += objectSize.x;
+                        GenTopLeft(outerWall);
                         break;
                     
                     case 3:
@@ -173,7 +174,6 @@ public class LevelGenerator : MonoBehaviour
                             (levelMap[i+1,j] == 3 || levelMap[i+1,j] == 4) &&
                             (levelMap[i,j-1] == 3 || levelMap[i,j-1] == 4) &&
                             (levelMap[i,j+1] == 3 || levelMap[i,j+1] == 4)) {
-                                Debug.Log("I should be shown twice");
                                 //Check if there are two straight walls in succession
 
                                 // == Top ==
@@ -193,9 +193,6 @@ public class LevelGenerator : MonoBehaviour
 
                                 // == Bottom ==
                                 if (levelMap[i-1,j] == 4 && levelMap[i-2,j] == 4) {
-                                    Debug.Log("This is running");
-                                    Debug.Log(levelMap[i,j+1] == 4);
-                                    Debug.Log(levelMap[i,j+2] == 4);
                                     // == Left ==
                                     if (levelMap[i,j+1] == 4 && levelMap[i,j+2] == 4) {
                                         GenBotLeft(innerWallCorner);
@@ -209,6 +206,31 @@ public class LevelGenerator : MonoBehaviour
                                 }
                             }
                         }
+
+                        // At the very edge of the maze
+                        if (j == 13) {
+                            // Check above twice for GenBot
+                            if ((levelMap[i-1,j] == 3 || levelMap[i-1,j] == 4) &&
+                            (levelMap[i-2,j] == 3 || levelMap[i-2,j] == 4)) {
+                                // Check left for GenRight
+                                if (levelMap[i,j-1] == 3 || levelMap[i,j-1] == 4) {
+                                    GenBotRight(innerWallCorner);
+                                } else {
+                                    GenBotLeft(innerWallCorner);
+                                }
+                            }
+                            // Check below twice for GenTop
+                            if ((levelMap[i+1,j] == 3 || levelMap[i+1,j] == 4) &&
+                            (levelMap[i+2,j] == 3 || levelMap[i+2,j] == 4)) {
+                                // Check left for GenRight
+                                if (levelMap[i,j-1] == 3 || levelMap[i,j-1] == 4) {
+                                    GenTopRight(innerWallCorner);
+                                } else {
+                                    GenTopLeft(innerWallCorner);
+                                }
+                            }
+                        }
+
                         startPos.x += objectSize.x;
                         break;
 
@@ -217,21 +239,36 @@ public class LevelGenerator : MonoBehaviour
                     case 4:
                         // Inner Wall
 
-                        if (j != 0 && j != 13) {
-                            if ((levelMap[i,j-1] == 3 || levelMap[i,j-1] == 4) &&
-                                (levelMap[i,j+1] == 3 || levelMap[i,j+1] == 4)) {
-                                Instantiate(innerWall, startPos, Quaternion.identity);
-                                startPos.x += objectSize.x;
+                        if (j == 13 || i == 14) {
+                            // Check if there is anything to the left
+                            if (levelMap[i,j-1] == 3 || levelMap[i,j-1] == 4) {
+                                GenTopLeft(innerWall);
+                                break;
+                            } else {
+                                GenBotLeft(innerWall);
                                 break;
                             }
                         }
-                        
 
-                        startPos.y -= objectSize.y;
-                        Instantiate(innerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 90)));
-                        startPos.x += objectSize.x;
-                        startPos.y += objectSize.y;
+                        if (j != 0 && j != 13) {
+                            if ((levelMap[i,j-1] == 3 || levelMap[i,j-1] == 4) &&
+                                (levelMap[i,j+1] == 3 || levelMap[i,j+1] == 4)) {
+                                GenTopLeft(innerWall);
+                                break;
+                            } 
+                            
+                            if ((levelMap[i-1,j] == 3 || levelMap[i-1,j] == 4) &&
+                            (levelMap[i+1,j] == 3 || levelMap[i+1,j] == 4)) {
+                                GenBotLeft(innerWall);
+                                break;
+                            }
+
+                        }
+
+                        GenTopLeft(innerWall);
                         break;
+
+                        
                     
                     case 5:
                         // Pellet
@@ -245,7 +282,7 @@ public class LevelGenerator : MonoBehaviour
 
                     case 7:
                         // T Junction
-                        Instantiate(tJWall, startPos, Quaternion.identity);
+                        Instantiate(tJWall, startPos, Quaternion.identity, parentWallObject.transform);
                         startPos.x += objectSize.x;
                         break;
 
@@ -263,24 +300,24 @@ public class LevelGenerator : MonoBehaviour
 
     void GenTopRight(GameObject cornerWall) {
         startPos.x += objectSize.x;
-        Instantiate(cornerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 270)));
+        Instantiate(cornerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 270)), parentWallObject.transform);
     }
 
     void GenTopLeft(GameObject cornerWall) {
-        Instantiate(cornerWall, startPos, Quaternion.identity);
+        Instantiate(cornerWall, startPos, Quaternion.identity, parentWallObject.transform);
         startPos.x += objectSize.x;
     }
 
     void GenBotRight(GameObject cornerWall) {
         startPos.x += objectSize.x;
         startPos.y -= objectSize.y;
-        Instantiate(cornerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 180)));
+        Instantiate(cornerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 180)), parentWallObject.transform);
         startPos.y += objectSize.y;
     }
 
     void GenBotLeft(GameObject cornerWall) {
         startPos.y -= objectSize.y;
-        Instantiate(cornerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 90)));
+        Instantiate(cornerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 90)), parentWallObject.transform);
         startPos.x += objectSize.x;
         startPos.y += objectSize.y;
     }
