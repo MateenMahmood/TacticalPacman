@@ -27,6 +27,7 @@ public class LevelGenerator : MonoBehaviour
     Vector3 objectSize;
 
     [SerializeField] private GameObject parentWallObject = null;
+    [SerializeField] private GameObject stitchedWall = null;
     [SerializeField] private GameObject innerWall = null;
     [SerializeField] private GameObject innerWallCorner = null;
     [SerializeField] private GameObject outerWall = null;
@@ -37,11 +38,22 @@ public class LevelGenerator : MonoBehaviour
     void Start() {
         objectSize = outerWall.GetComponent<Renderer>().bounds.size;
         GenOneQuad();
-        
+        Vector3 quadLoc = new Vector3(2f * 14 * objectSize.x, 0f, 0f);
+        Instantiate(parentWallObject, quadLoc, Quaternion.Euler(new Vector3(0, 180, 0)));
+        quadLoc = new Vector3(0, (-2f * 14f * objectSize.y) - objectSize.y, 0);
+        Instantiate(parentWallObject, quadLoc, Quaternion.Euler(new Vector3(180, 0, 0)));
+        quadLoc.x += 2f * 14 * objectSize.x;
+        Instantiate(parentWallObject, quadLoc, Quaternion.Euler(180, 180, 0));
+
+        startPos = new Vector3(0, 0, 0);
+
+        GenLastLine();
+        quadLoc = new Vector3(2f * 14 * objectSize.x, 0, 0);
+        Instantiate(stitchedWall, quadLoc, Quaternion.Euler(new Vector3(0, 180, 0)));
     }
 
     void GenOneQuad() {
-        // Loop over every element in the array        
+        // Loop over every element in the array
         for(int i = 0; i < levelMap.GetLength(0); i++) {
             for (int j = 0; j < levelMap.GetLength(1); j++) {
                 int caseSwitch = levelMap[i,j];
@@ -238,37 +250,41 @@ public class LevelGenerator : MonoBehaviour
 
                     case 4:
                         // Inner Wall
+                        if (i != 14) {
 
-                        if (j == 13 || i == 14) {
-                            // Check if there is anything to the left
-                            if (levelMap[i,j-1] == 3 || levelMap[i,j-1] == 4) {
-                                GenTopLeft(innerWall);
-                                break;
-                            } else {
-                                GenBotLeft(innerWall);
-                                break;
-                            }
-                        }
-
-                        if (j != 0 && j != 13) {
-                            if ((levelMap[i,j-1] == 3 || levelMap[i,j-1] == 4) &&
-                                (levelMap[i,j+1] == 3 || levelMap[i,j+1] == 4)) {
-                                GenTopLeft(innerWall);
-                                break;
-                            } 
-                            
-                            if ((levelMap[i-1,j] == 3 || levelMap[i-1,j] == 4) &&
-                            (levelMap[i+1,j] == 3 || levelMap[i+1,j] == 4)) {
-                                GenBotLeft(innerWall);
-                                break;
+                            if (j == 13 || i == 14) {
+                                // Check if there is anything to the left
+                                if (levelMap[i,j-1] == 3 || levelMap[i,j-1] == 4) {
+                                    GenTopLeft(innerWall);
+                                    
+                                    break;
+                                } else {
+                                    GenBotLeft(innerWall);
+                                    break;
+                                }
                             }
 
+                            if (j != 0 && j != 13) {
+                                if ((levelMap[i,j-1] == 3 || levelMap[i,j-1] == 4) &&
+                                    (levelMap[i,j+1] == 3 || levelMap[i,j+1] == 4)) {
+                                    GenTopLeft(innerWall);
+                                    break;
+                                } 
+                                
+                                if ((levelMap[i-1,j] == 3 || levelMap[i-1,j] == 4) &&
+                                (levelMap[i+1,j] == 3 || levelMap[i+1,j] == 4)) {
+                                    GenBotLeft(innerWall);
+                                    break;
+                                }
+
+                            }
+                            GenTopLeft(innerWall);
+                            break;
+
+                        } else {
+                            startPos.x += objectSize.x;
+                            break;
                         }
-
-                        GenTopLeft(innerWall);
-                        break;
-
-                        
                     
                     case 5:
                         // Pellet
@@ -298,27 +314,53 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    void GenTopRight(GameObject cornerWall) {
-        startPos.x += objectSize.x;
-        Instantiate(cornerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 270)), parentWallObject.transform);
+    void GenLastLine() {
+        for(int i = 0; i < levelMap.GetLength(0); i++) {
+            for (int j = 0; j < levelMap.GetLength(1); j++) {
+                int caseSwitch = levelMap[i,j];
+                
+                if (caseSwitch == 4) {
+                    if (i == 14) {
+                        startPos.y -= objectSize.y;
+                        Instantiate(innerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 90)), stitchedWall.transform);
+                        startPos.x += objectSize.x;
+                        startPos.y += objectSize.y;
+                    }
+                    
+                } else {
+                    startPos.x += objectSize.x;
+                }
+            }
+            // Once the Line is done
+            startPos.y -= objectSize.y;
+            startPos.x = 0;
+        }
     }
 
-    void GenTopLeft(GameObject cornerWall) {
-        Instantiate(cornerWall, startPos, Quaternion.identity, parentWallObject.transform);
+    GameObject GenTopRight(GameObject cornerWall) {
         startPos.x += objectSize.x;
+        return(Instantiate(cornerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 270)), parentWallObject.transform));
     }
 
-    void GenBotRight(GameObject cornerWall) {
+    GameObject GenTopLeft(GameObject cornerWall) {
+        GameObject temp = Instantiate(cornerWall, startPos, Quaternion.identity, parentWallObject.transform);
+        startPos.x += objectSize.x;
+        return(temp);
+    }
+
+    GameObject GenBotRight(GameObject cornerWall) {
         startPos.x += objectSize.x;
         startPos.y -= objectSize.y;
-        Instantiate(cornerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 180)), parentWallObject.transform);
+        GameObject temp = Instantiate(cornerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 180)), parentWallObject.transform);
         startPos.y += objectSize.y;
+        return(temp);
     }
 
-    void GenBotLeft(GameObject cornerWall) {
+    GameObject GenBotLeft(GameObject cornerWall) {
         startPos.y -= objectSize.y;
-        Instantiate(cornerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 90)), parentWallObject.transform);
+        GameObject temp = Instantiate(cornerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 90)), parentWallObject.transform);
         startPos.x += objectSize.x;
         startPos.y += objectSize.y;
+        return(temp);
     }
 }
