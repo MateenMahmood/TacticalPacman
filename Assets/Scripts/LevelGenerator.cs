@@ -325,14 +325,14 @@ public class LevelGenerator : MonoBehaviour
             for (int j = 0; j < levelMap.GetLength(1); j++) {
                 int caseSwitch = levelMap[i,j];
                 
-                if (caseSwitch == 4) {
-                    if (i == 14) {
-                        startPos.y -= objectSize.y;
-                        Instantiate(innerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 90)), stitchedWall.transform);
-                        startPos.x += objectSize.x;
-                        startPos.y += objectSize.y;
-                    }
-                    
+                if (caseSwitch == 4 && i == 14) {
+                    startPos.y -= objectSize.y;
+                    Instantiate(innerWall, startPos, Quaternion.Euler(new Vector3(0, 0, 90)), stitchedWall.transform);
+                    startPos.x += objectSize.x;
+                    startPos.y += objectSize.y;
+                } else if (caseSwitch == 5 && i == 14) {
+                    Instantiate(pellet, startPos, Quaternion.identity, parentWallObject.transform);
+                    startPos.x += objectSize.x;
                 } else {
                     startPos.x += objectSize.x;
                 }
