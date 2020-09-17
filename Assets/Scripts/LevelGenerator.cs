@@ -331,7 +331,7 @@ public class LevelGenerator : MonoBehaviour
                     startPos.x += objectSize.x;
                     startPos.y += objectSize.y;
                 } else if (caseSwitch == 5 && i == 14) {
-                    Instantiate(pellet, startPos, Quaternion.identity, parentWallObject.transform);
+                    Instantiate(pellet, startPos, Quaternion.identity, stitchedWall.transform);
                     startPos.x += objectSize.x;
                 } else {
                     startPos.x += objectSize.x;
