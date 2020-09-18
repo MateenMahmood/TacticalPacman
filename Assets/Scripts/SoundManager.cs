@@ -19,6 +19,5 @@ public class SoundManager : MonoBehaviour
         if (!startJingle.isPlaying && !mainMusic.isPlaying) {
             mainMusic.Play();
         }
-
     }
 }
