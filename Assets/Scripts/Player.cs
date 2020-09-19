@@ -27,31 +27,53 @@ public class Player : MonoBehaviour
         // Check if the player is moving
         if (prevTransform != parentObject.transform.position) {
             animatorController.SetBool("isMoving", true);
+
+            if (parentObject.transform.position.x > prevTransform.x) {
+                animatorController.SetBool("goingUp", false);
+                animatorController.SetBool("goingDown", false);
+                animatorController.SetBool("goingLeft", false);
+                animatorController.SetBool("goingRight", true);
+            }
+            if (parentObject.transform.position.x < prevTransform.x) {
+                animatorController.SetBool("goingUp", false);
+                animatorController.SetBool("goingDown", false);
+                animatorController.SetBool("goingLeft", true);
+                animatorController.SetBool("goingRight", false);
+            }
+            if (parentObject.transform.position.y > prevTransform.y) {
+                animatorController.SetBool("goingUp", true);
+                animatorController.SetBool("goingDown", false);
+                animatorController.SetBool("goingLeft", false);
+                animatorController.SetBool("goingRight", false);
+            }
+            if (parentObject.transform.position.y < prevTransform.y) {
+                animatorController.SetBool("goingUp", false);
+                animatorController.SetBool("goingDown", true);
+                animatorController.SetBool("goingLeft", false);
+                animatorController.SetBool("goingRight", false);
+            }
         } else {
             animatorController.SetBool("isMoving", false);
+            animatorController.SetBool("goingUp", false);
+            animatorController.SetBool("goingDown", false);
+            animatorController.SetBool("goingLeft", false);
+            animatorController.SetBool("goingRight", false);
         }
         prevTransform = parentObject.transform.position;
 
 
         if (parentObject.transform.position == new Vector3(0.32f, -0.32f, 0)) {
-            animatorController.SetBool("goingUp", false);
             MovePlayer(new Vector3(1.92f, -0.32f, 0f), 1.5f);
-            animatorController.SetBool("goingRight", true);
+            
         }
         if (parentObject.transform.position == new Vector3(1.92f, -0.32f, 0f)) {
-            animatorController.SetBool("goingRight", false);
             MovePlayer(new Vector3(1.92f, -1.6f, 0f), 1.5f);
-            animatorController.SetBool("goingDown", true);
         }
         if (parentObject.transform.position == new Vector3(1.92f, -1.6f, 0f)) {
-            animatorController.SetBool("goingDown", false);
             MovePlayer(new Vector3(0.32f, -1.6f, 0f), 1.5f);
-            animatorController.SetBool("goingLeft", true);
         }
         if (parentObject.transform.position == new Vector3(0.32f, -1.6f, 0f)) {
-            animatorController.SetBool("goingLeft", false);
             MovePlayer(new Vector3(0.32f, -0.32f, 0), 1.5f);
-            animatorController.SetBool("goingUp", true);
         }
     }
 
