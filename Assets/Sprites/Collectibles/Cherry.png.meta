@@ -1,49 +1,61 @@
 fileFormatVersion: 2
-guid: 74b1164b723b688488e58dd88771831e
+guid: 0bb49c522add96947b88a5b6948caead
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -671317945438955680
-    second: PowerPellet_0
+      213: -1435901459259225544
+    second: Cherry_0
   - first:
-      213: 3348014233251927815
-    second: PowerPellet_1
+      213: -4791731822471050464
+    second: Cherry_1
   - first:
-      213: -7773571923748207471
-    second: PowerPellet_2
+      213: 1034195916774038944
+    second: Cherry_2
   - first:
-      213: 2221083934954678062
-    second: PowerPellet_3
+      213: -1489388738462550693
+    second: Cherry_3
   - first:
-      213: 1054552832419918001
-    second: PowerPellet_4
+      213: 463206273958285660
+    second: Cherry_4
   - first:
-      213: 5472042321166431996
-    second: PowerPellet_5
+      213: 5068302325122586974
+    second: Cherry_5
   - first:
-      213: 5579010193718603223
-    second: PowerPellet_6
+      213: -4220644928825619919
+    second: Cherry_6
   - first:
-      213: -8895317694186651703
-    second: PowerPellet_7
+      213: 6123082216517926836
+    second: Cherry_7
   - first:
-      213: -1226551474721419288
-    second: PowerPellet_8
+      213: -5259354032910510348
+    second: Cherry_8
   - first:
-      213: 3826274795547747665
-    second: PowerPellet_9
+      213: -1091327069491354697
+    second: Cherry_9
   - first:
-      213: 4582328602579539186
-    second: PowerPellet_10
+      213: 5903812477125551006
+    second: Cherry_10
   - first:
-      213: -6923356371528091300
-    second: PowerPellet_11
+      213: -8602083566131301879
+    second: Cherry_11
   - first:
-      213: 5532525970326415406
-    second: PowerPellet_12
+      213: -7779753798395512618
+    second: Cherry_12
   - first:
-      213: 2907181133569317361
-    second: PowerPellet_13
+      213: -5725225845099075398
+    second: Cherry_13
+  - first:
+      213: 2980404247699295328
+    second: Cherry_14
+  - first:
+      213: 2402024172576410552
+    second: Cherry_15
+  - first:
+      213: -8580386250965654616
+    second: Cherry_16
+  - first:
+      213: 4187006952295317079
+    second: Cherry_17
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -85,8 +97,8 @@ TextureImporter:
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 1
-  spritePivot: {x: 0, y: 1}
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -105,7 +117,7 @@ TextureImporter:
     maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -117,7 +129,7 @@ TextureImporter:
     maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -128,7 +140,91 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PowerPellet_0
+      name: Cherry_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 32
+        height: 32
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83a83640b37a21ce0800000000000000
+      internalID: -1435901459259225544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherry_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 128
+        width: 32
+        height: 32
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02b8dae8b49508db0800000000000000
+      internalID: -4791731822471050464
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherry_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 128
+        width: 32
+        height: 32
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0add977f4b33a5e00800000000000000
+      internalID: 1034195916774038944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherry_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 128
+        width: 32
+        height: 32
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b55f87f55d0a45be0800000000000000
+      internalID: -1489388738462550693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherry_4
       rect:
         serializedVersion: 2
         x: 0
@@ -142,14 +238,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 06714caa2effea6f0800000000000000
-      internalID: -671317945438955680
+      spriteID: c511409e6a3ad6600800000000000000
+      internalID: 463206273958285660
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PowerPellet_1
+      name: Cherry_5
       rect:
         serializedVersion: 2
         x: 32
@@ -163,14 +259,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 707dee3e439867e20800000000000000
-      internalID: 3348014233251927815
+      spriteID: e59d7379c1a365640800000000000000
+      internalID: 5068302325122586974
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PowerPellet_2
+      name: Cherry_6
       rect:
         serializedVersion: 2
         x: 64
@@ -184,14 +280,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 194c9018589be1490800000000000000
-      internalID: -7773571923748207471
+      spriteID: 13a8b469cc14d65c0800000000000000
+      internalID: -4220644928825619919
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PowerPellet_3
+      name: Cherry_7
       rect:
         serializedVersion: 2
         x: 96
@@ -205,14 +301,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e27ec4f2210e2de10800000000000000
-      internalID: 2221083934954678062
+      spriteID: 4bfff0e95de89f450800000000000000
+      internalID: 6123082216517926836
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PowerPellet_4
+      name: Cherry_8
       rect:
         serializedVersion: 2
         x: 0
@@ -226,14 +322,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1b0754db63682ae00800000000000000
-      internalID: 1054552832419918001
+      spriteID: 4f6d9505f550307b0800000000000000
+      internalID: -5259354032910510348
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PowerPellet_5
+      name: Cherry_9
       rect:
         serializedVersion: 2
         x: 32
@@ -247,14 +343,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cf6770dbf7990fb40800000000000000
-      internalID: 5472042321166431996
+      spriteID: 7b32339ffc3dad0f0800000000000000
+      internalID: -1091327069491354697
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PowerPellet_6
+      name: Cherry_10
       rect:
         serializedVersion: 2
         x: 64
@@ -268,14 +364,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7dd61ea5630ac6d40800000000000000
-      internalID: 5579010193718603223
+      spriteID: e93669f0b2e8ee150800000000000000
+      internalID: 5903812477125551006
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PowerPellet_7
+      name: Cherry_11
       rect:
         serializedVersion: 2
         x: 96
@@ -289,14 +385,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9cff1c1cfab7d8480800000000000000
-      internalID: -8895317694186651703
+      spriteID: 902b48882924f9880800000000000000
+      internalID: -8602083566131301879
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PowerPellet_8
+      name: Cherry_12
       rect:
         serializedVersion: 2
         x: 0
@@ -310,14 +406,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8ef8f7aaee96afee0800000000000000
-      internalID: -1226551474721419288
+      spriteID: 6d8b3a6a323c80490800000000000000
+      internalID: -7779753798395512618
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PowerPellet_9
+      name: Cherry_13
       rect:
         serializedVersion: 2
         x: 32
@@ -331,14 +427,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 15567a177a8a91530800000000000000
-      internalID: 3826274795547747665
+      spriteID: ab8ebfb6d69eb80b0800000000000000
+      internalID: -5725225845099075398
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PowerPellet_10
+      name: Cherry_14
       rect:
         serializedVersion: 2
         x: 64
@@ -352,14 +448,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2f49dd8f593b79f30800000000000000
-      internalID: 4582328602579539186
+      spriteID: 06c8e275fd58c5920800000000000000
+      internalID: 2980404247699295328
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PowerPellet_11
+      name: Cherry_15
       rect:
         serializedVersion: 2
         x: 96
@@ -373,14 +469,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c5971a5cf0c4bef90800000000000000
-      internalID: -6923356371528091300
+      spriteID: 8bb815c2244b55120800000000000000
+      internalID: 2402024172576410552
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PowerPellet_12
+      name: Cherry_16
       rect:
         serializedVersion: 2
         x: 0
@@ -394,29 +490,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e28ede3be0b77cc40800000000000000
-      internalID: 5532525970326415406
+      spriteID: 8a3eb836a285ce880800000000000000
+      internalID: -8580386250965654616
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PowerPellet_13
+      name: Cherry_17
       rect:
         serializedVersion: 2
-        x: 0
+        x: 32
         y: 0
-        width: 0
-        height: 0
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 32
+        height: 32
+      alignment: 1
+      pivot: {x: 0, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 1f9dd1c86d1685820800000000000000
-      internalID: 2907181133569317361
+      spriteID: 75e37afa3ac3b1a30800000000000000
+      internalID: 4187006952295317079
       vertices: []
       indices: 
       edges: []
@@ -424,7 +520,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
