@@ -27,6 +27,9 @@ public class Player : MonoBehaviour
         // Check if the player is moving
         if (prevTransform != parentObject.transform.position) {
             animatorController.SetBool("isMoving", true);
+            if (!moveSound.isPlaying) {
+                moveSound.Play();
+            }
 
             if (parentObject.transform.position.x > prevTransform.x) {
                 animatorController.SetBool("goingUp", false);
@@ -53,6 +56,7 @@ public class Player : MonoBehaviour
                 animatorController.SetBool("goingRight", false);
             }
         } else {
+            moveSound.Stop();
             animatorController.SetBool("isMoving", false);
             animatorController.SetBool("goingUp", false);
             animatorController.SetBool("goingDown", false);
