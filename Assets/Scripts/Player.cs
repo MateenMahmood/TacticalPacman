@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         parentObject = this.transform.parent.gameObject;
-        parentObject.transform.position = new Vector3(0.32f, -0.32f, 0);
+        //parentObject.transform.position = new Vector3(0.32f, -0.32f, 0);
         itemList = new List<GameObject>();
         itemList.Add(parentObject);
         Debug.Log(itemList[0]);
