@@ -17,9 +17,8 @@ public class Tweener : MonoBehaviour
         if (activeTweens != null) {
             for (int i = 0; i < activeTweens.Count; i++) {
 
-                if (Vector3.Distance(activeTweens[i].Target.position, activeTweens[i].EndPos) > 0.02f) {
+                if (Vector3.Distance(activeTweens[i].Target.position, activeTweens[i].EndPos) > 0.008f) {
                     t += activeTweens[i].Rate * Time.deltaTime;
-                    Debug.Log("\nt: " + t);
                     activeTweens[i].Target.position = Vector3.Lerp(activeTweens[i].StartPos, activeTweens[i].EndPos, t);
                 } else {
                     activeTweens[i].Target.position = activeTweens[i].EndPos;
