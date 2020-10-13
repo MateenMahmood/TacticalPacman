@@ -12,7 +12,7 @@ public class CharacterGen : MonoBehaviour
     [SerializeField] GameObject Clyde = null;
     // Start is called before the first frame update
     void Start() {
-        GameObject pacman = Instantiate(Pacman, new Vector3(0.32f, -0.32f, 0), Quaternion.identity);
+        GameObject pacman = Instantiate(Pacman, new Vector3(0.48f, -0.48f, 0), Quaternion.identity);
         GameObject inky = Instantiate(Inky, new Vector3(3.84f, -4.48f, 0), Quaternion.identity);
         GameObject blinky = Instantiate(Blinky, new Vector3(4.16f, -4.48f, 0), Quaternion.identity);
         GameObject pinky = Instantiate(Pinky, new Vector3(4.48f, -4.48f, 0), Quaternion.identity);
