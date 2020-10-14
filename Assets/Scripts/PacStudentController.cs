@@ -36,6 +36,7 @@ public class PacStudentController : MonoBehaviour
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7,7,2,2,2,2,2,2,2,2,2,2,2,2,1},
     };
     
+    List<int> walkableValues;
     Vector2Int mapPos;
     Vector3 prevPos;
     Vector3 endPos;
@@ -43,8 +44,14 @@ public class PacStudentController : MonoBehaviour
     [SerializeField] Animator animator = null;
     KeyCode lastInput;
     KeyCode currentInput;
+    [SerializeField] AudioSource soundSource = null;
+    [SerializeField] List<AudioClip> soundClips = null;
 
     void Start() {
+        walkableValues = new List<int>();
+        walkableValues.Add(0);
+        walkableValues.Add(5);
+        walkableValues.Add(6);
         prevPos = transform.position;
         mapPos = new Vector2Int(1, 1);
         tweener = gameObject.GetComponent<Tweener>();
@@ -69,6 +76,10 @@ public class PacStudentController : MonoBehaviour
             lastInput = KeyCode.S;
         }
 
+        if (tweener == null) {
+            Debug.Log("Tweener is null! Script execution is weird");
+        }
+
         if (!(tweener.TweenExists(transform))) {
             // Player is not moving
             
@@ -76,15 +87,18 @@ public class PacStudentController : MonoBehaviour
             if (isWalkable(lastInput)) {
                 // Walkable
                 currentInput = lastInput;
-                tweener.AddTween(transform, transform.position, endPos, 1.5f);
+                tweener.AddTween(transform, transform.position, endPos, 2f);
             } else {
                 // Not Walkable
                 // Check previous input
                 if (isWalkable(currentInput)) {
-                    tweener.AddTween(transform, transform.position, endPos, 1.5f);
+                    tweener.AddTween(transform, transform.position, endPos, 2f);
                 }
             }
+        } else {
+            HandleAudio();
         }
+        
         prevPos = transform.position;
     }
 
@@ -92,7 +106,7 @@ public class PacStudentController : MonoBehaviour
         endPos = transform.position;
 
         if (keyCode == KeyCode.D) {
-            if (levelMap[mapPos.x, mapPos.y + 1] == 5) {
+            if (walkableValues.Contains(levelMap[mapPos.x, mapPos.y + 1])) {
                 mapPos.y += 1;
                 endPos.x += 0.32f;
                 return true;
@@ -100,7 +114,7 @@ public class PacStudentController : MonoBehaviour
         }
 
         if (keyCode == KeyCode.A) {
-            if (levelMap[mapPos.x, mapPos.y - 1] == 5) {
+            if (walkableValues.Contains(levelMap[mapPos.x, mapPos.y - 1])) {
                 mapPos.y -= 1;
                 endPos.x -= 0.32f;
                 return true;
@@ -108,7 +122,7 @@ public class PacStudentController : MonoBehaviour
         }
 
         if (keyCode == KeyCode.W) {
-            if (levelMap[mapPos.x - 1, mapPos.y] == 5) {
+            if (walkableValues.Contains(levelMap[mapPos.x - 1, mapPos.y])) {
                 mapPos.x -= 1;
                 endPos.y += 0.32f;
                 return true;
@@ -116,7 +130,7 @@ public class PacStudentController : MonoBehaviour
         }
 
         if (keyCode == KeyCode.S) {
-            if (levelMap[mapPos.x + 1, mapPos.y] == 5) {
+            if (walkableValues.Contains(levelMap[mapPos.x + 1, mapPos.y])) {
                 mapPos.x += 1;
                 endPos.y -= 0.32f;
                 return true;
@@ -156,5 +170,22 @@ public class PacStudentController : MonoBehaviour
         animator.SetBool("goingDown", isDown);
         animator.SetBool("goingLeft", isLeft);
         animator.SetBool("goingRight", isRight);
+    }
+
+    void HandleAudio() {
+        // Set Audio Clips
+        
+        if (levelMap[mapPos.x, mapPos.y] == 0) {
+            soundSource.clip = soundClips[0];
+        }
+        
+        if (levelMap[mapPos.x, mapPos.y] == 5) {
+            soundSource.clip = soundClips[1];
+        }
+
+        if (!soundSource.isPlaying) {
+            // Play Audio
+            soundSource.Play();
+        }
     }
 }

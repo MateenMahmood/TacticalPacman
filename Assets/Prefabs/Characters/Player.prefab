@@ -117,6 +117,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 8422120637350224340}
+  soundSource: {fileID: 8422120637350224426}
+  soundClips:
+  - {fileID: 8300000, guid: 693e29e55d5a16848965f633de755d60, type: 3}
+  - {fileID: 8300000, guid: 253dd7d83e6ddab459bb42f0265047b2, type: 3}
+  - {fileID: 8300000, guid: 98369cba800453c469fffbef27bcdfda, type: 3}
 --- !u!82 &8422120637350224426
 AudioSource:
   m_ObjectHideFlags: 0
@@ -131,7 +136,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 0.6
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

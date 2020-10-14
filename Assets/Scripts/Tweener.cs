@@ -8,8 +8,10 @@ public class Tweener : MonoBehaviour
 
     float t;
 
-    private void Start() {
+    private void Awake() {
         activeTweens = new List<Tween>();
+    }
+    private void Start() {
         t = 0f;
     }
 
