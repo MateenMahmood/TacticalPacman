@@ -5,21 +5,35 @@ using UnityEngine;
 public class PacStudentController : MonoBehaviour
 {
     int[,] levelMap = {
-        {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
-        {2,5,5,5,5,5,5,5,5,5,5,5,5,4},
-        {2,5,3,4,4,3,5,3,4,4,4,3,5,4},
-        {2,6,4,0,0,4,5,4,0,0,0,4,5,4},
-        {2,5,3,4,4,3,5,3,4,4,4,3,5,3},
-        {2,5,5,5,5,5,5,5,5,5,5,5,5,5},
-        {2,5,3,4,4,3,5,3,3,5,3,4,4,4},
-        {2,5,3,4,4,3,5,4,4,5,3,4,4,3},
-        {2,5,5,5,5,5,5,4,4,5,5,5,5,4},
-        {1,2,2,2,2,1,5,4,3,4,4,3,0,4},
-        {0,0,0,0,0,2,5,4,3,4,4,3,0,3},
-        {0,0,0,0,0,2,5,4,4,0,0,0,0,0},
-        {0,0,0,0,0,2,5,4,4,0,3,4,4,0},
-        {2,2,2,2,2,1,5,3,3,0,4,0,0,0},
-        {0,0,0,0,0,0,5,0,0,0,4,0,0,0}, 
+        {1,2,2,2,2,2,2,2,2,2,2,2,2,7,7,2,2,2,2,2,2,2,2,2,2,2,2,1},
+        {2,5,5,5,5,5,5,5,5,5,5,5,5,4,4,5,5,5,5,5,5,5,5,5,5,5,5,2},
+        {2,5,3,4,4,3,5,3,4,4,4,3,5,4,4,5,3,4,4,4,3,5,3,4,4,3,5,2},
+        {2,6,4,0,0,4,5,4,0,0,0,4,5,4,4,5,4,0,0,0,4,5,4,0,0,4,6,2},
+        {2,5,3,4,4,3,5,3,4,4,4,3,5,3,3,5,3,4,4,4,3,5,3,4,4,3,5,2},
+        {2,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,2},
+        {2,5,3,4,4,3,5,3,3,5,3,4,4,4,4,4,4,3,5,3,3,5,3,4,4,3,5,2},
+        {2,5,3,4,4,3,5,4,4,5,3,4,4,3,3,4,4,3,5,4,4,5,3,4,4,3,5,2},
+        {2,5,5,5,5,5,5,4,4,5,5,5,5,4,4,5,5,5,5,4,4,5,5,5,5,5,5,2},
+        {1,2,2,2,2,1,5,4,3,4,4,3,0,4,4,0,3,4,4,3,4,5,1,2,2,2,2,1},
+        {0,0,0,0,0,2,5,4,3,4,4,3,0,3,3,0,3,4,4,3,4,5,2,0,0,0,0,0},
+        {0,0,0,0,0,2,5,4,4,0,0,0,0,0,0,0,0,0,0,4,4,5,2,0,0,0,0,0},
+        {0,0,0,0,0,2,5,4,4,0,3,4,4,0,0,4,4,3,0,4,4,5,2,0,0,0,0,0},
+        {2,2,2,2,2,1,5,3,3,0,4,0,0,0,0,0,0,4,0,3,3,5,1,2,2,2,2,2},
+        {0,0,0,0,0,0,5,0,0,0,4,0,0,0,0,0,0,4,0,0,0,5,0,0,0,0,0,0},
+        {2,2,2,2,2,1,5,3,3,0,4,0,0,0,0,0,0,4,0,3,3,5,1,2,2,2,2,2},
+        {0,0,0,0,0,2,5,4,4,0,3,4,4,0,0,4,4,3,0,4,4,5,2,0,0,0,0,0},
+        {0,0,0,0,0,2,5,4,4,0,0,0,0,0,0,0,0,0,0,4,4,5,2,0,0,0,0,0},
+        {0,0,0,0,0,2,5,4,3,4,4,3,0,3,3,0,3,4,4,3,4,5,2,0,0,0,0,0},
+        {1,2,2,2,2,1,5,4,3,4,4,3,0,4,4,0,3,4,4,3,4,5,1,2,2,2,2,1},
+        {2,5,5,5,5,5,5,4,4,5,5,5,5,4,4,5,5,5,5,4,4,5,5,5,5,5,5,2},
+        {2,5,3,4,4,3,5,4,4,5,3,4,4,3,3,4,4,3,5,4,4,5,3,4,4,3,5,2},
+        {2,5,3,4,4,3,5,3,3,5,3,4,4,4,4,4,4,3,5,3,3,5,3,4,4,3,5,2},
+        {2,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,2},
+        {2,5,3,4,4,3,5,3,4,4,4,3,5,3,3,5,3,4,4,4,3,5,3,4,4,3,5,2},
+        {2,6,4,0,0,4,5,4,0,0,0,4,5,4,4,5,4,0,0,0,4,5,4,0,0,4,6,2},
+        {2,5,3,4,4,3,5,3,4,4,4,3,5,4,4,5,3,4,4,4,3,5,3,4,4,3,5,2},
+        {2,5,5,5,5,5,5,5,5,5,5,5,5,4,4,5,5,5,5,5,5,5,5,5,5,5,5,2},
+        {1,2,2,2,2,2,2,2,2,2,2,2,2,7,7,2,2,2,2,2,2,2,2,2,2,2,2,1},
     };
     
     Vector2Int mapPos;
@@ -41,8 +55,6 @@ public class PacStudentController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.D)) {
             lastInput = KeyCode.D;
-            Debug.Log(levelMap[mapPos.x, mapPos.y + 1]);
-            Debug.Log(mapPos);
         }
 
         if (Input.GetKeyDown(KeyCode.A)) {
@@ -115,40 +127,34 @@ public class PacStudentController : MonoBehaviour
     }
 
     void SetAnim() {
-        if (prevPos != transform.position) {
-            animator.SetBool("isMoving", true);
 
-            if (transform.position.x > prevPos.x) {
-                animator.SetBool("goingUp", false);
-                animator.SetBool("goingDown", false);
-                animator.SetBool("goingLeft", false);
-                animator.SetBool("goingRight", true);
-            }
-            if (transform.position.x < prevPos.x) {
-                animator.SetBool("goingUp", false);
-                animator.SetBool("goingDown", false);
-                animator.SetBool("goingLeft", true);
-                animator.SetBool("goingRight", false);
-            }
-            if (transform.position.y > prevPos.y) {
-                animator.SetBool("goingUp", true);
-                animator.SetBool("goingDown", false);
-                animator.SetBool("goingLeft", false);
-                animator.SetBool("goingRight", false);
-            }
-            if (transform.position.y < prevPos.y) {
-                animator.SetBool("goingUp", false);
-                animator.SetBool("goingDown", true);
-                animator.SetBool("goingLeft", false);
-                animator.SetBool("goingRight", false);
-            }
+        bool isMoving = false;
+        bool isUp = false;
+        bool isDown = false;
+        bool isLeft = false;
+        bool isRight = false;
 
-        } else {
-            animator.SetBool("isMoving", false);
-            animator.SetBool("goingUp", false);
-            animator.SetBool("goingDown", false);
-            animator.SetBool("goingLeft", false);
-            animator.SetBool("goingRight", false);
+        if (transform.position != prevPos) {
+            isMoving = true;
         }
+
+        if (transform.position.x > prevPos.x) {
+            isRight = true;
+        }
+        if (transform.position.x < prevPos.x) {
+            isLeft = true;
+        }
+        if (transform.position.y > prevPos.y) {
+            isUp = true;
+        }
+        if (transform.position.y < prevPos.y) {
+            isDown = true;
+        }
+
+        animator.SetBool("isMoving", isMoving);
+        animator.SetBool("goingUp", isUp);
+        animator.SetBool("goingDown", isDown);
+        animator.SetBool("goingLeft", isLeft);
+        animator.SetBool("goingRight", isRight);
     }
 }
