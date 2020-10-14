@@ -42,6 +42,7 @@ public class PacStudentController : MonoBehaviour
     Vector3 endPos;
     Tweener tweener;
     [SerializeField] Animator animator = null;
+    [SerializeField] ParticleSystem particle = null;
     KeyCode lastInput;
     KeyCode currentInput;
     [SerializeField] AudioSource soundSource = null;
@@ -55,6 +56,7 @@ public class PacStudentController : MonoBehaviour
         prevPos = transform.position;
         mapPos = new Vector2Int(1, 1);
         tweener = gameObject.GetComponent<Tweener>();
+        particle = gameObject.GetComponent<ParticleSystem>();
     }
     void Update() {
 
@@ -98,7 +100,7 @@ public class PacStudentController : MonoBehaviour
         } else {
             HandleAudio();
         }
-        
+
         prevPos = transform.position;
     }
 
@@ -150,7 +152,16 @@ public class PacStudentController : MonoBehaviour
 
         if (transform.position != prevPos) {
             isMoving = true;
+            if (!particle.isPlaying) {
+                particle.Play();
+            }
+        } else {
+            if (particle.isPlaying) {
+                particle.Stop();
+            }
         }
+
+        Debug.Log(particle.isPlaying);
 
         if (transform.position.x > prevPos.x) {
             isRight = true;
