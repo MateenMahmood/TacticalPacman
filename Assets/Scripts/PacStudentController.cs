@@ -43,6 +43,7 @@ public class PacStudentController : MonoBehaviour
     Tweener tweener;
     [SerializeField] Animator animator = null;
     [SerializeField] ParticleSystem particle = null;
+    [SerializeField] GameObject wallColl = null;
     bool wallSoundTrig;
     KeyCode lastInput;
     KeyCode currentInput;
@@ -105,6 +106,7 @@ public class PacStudentController : MonoBehaviour
 
             if (!soundSource.isPlaying && wallSoundTrig) {
                 soundSource.Play();
+                Instantiate(wallColl, transform.position, Quaternion.identity);
                 wallSoundTrig = false;
             }
         } else {
