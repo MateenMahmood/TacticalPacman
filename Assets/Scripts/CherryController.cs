@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CherryController : MonoBehaviour
 {
-    [SerializeField] GameObject cherry;
+    [SerializeField] GameObject cherry = null;
     GameObject cherryClone;
     Vector3 startPos;
     Vector3 endPos;
@@ -28,7 +28,7 @@ public class CherryController : MonoBehaviour
     void Update() {
 
         timer += Time.deltaTime;
-        
+
         // Every 30 Seconds
         if (timer > 30 && !doesExist) {
             cherryClone = Instantiate(cherry, startPos, Quaternion.identity);

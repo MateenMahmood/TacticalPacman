@@ -395,6 +395,7 @@ GameObject:
   m_Component:
   - component: {fileID: 439164088}
   - component: {fileID: 439164089}
+  - component: {fileID: 439164090}
   m_Layer: 0
   m_Name: CharacterGen
   m_TagString: Untagged
@@ -434,6 +435,19 @@ MonoBehaviour:
   Blinky: {fileID: 8476229914096193300, guid: 70b6afecb0df8e54fab1f7b18cd88dac, type: 3}
   Pinky: {fileID: 6987484392558354885, guid: 308d44d45ac39464695f95c4e545d47d, type: 3}
   Clyde: {fileID: 7656253307954603334, guid: 12e998e0483fa6b43842fbeb44086f7f, type: 3}
+--- !u!114 &439164090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439164087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 707b468ddc512f14380649c18361a18e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cherry: {fileID: 5559578353127503273, guid: a7628f4160c309c468ca78feaabaa64f, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

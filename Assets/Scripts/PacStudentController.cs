@@ -43,6 +43,7 @@ public class PacStudentController : MonoBehaviour
     Tweener tweener;
     [SerializeField] Animator animator = null;
     [SerializeField] ParticleSystem particle = null;
+    bool wallSoundTrig;
     KeyCode lastInput;
     KeyCode currentInput;
     [SerializeField] AudioSource soundSource = null;
@@ -56,11 +57,11 @@ public class PacStudentController : MonoBehaviour
         prevPos = transform.position;
         mapPos = new Vector2Int(1, 1);
         tweener = gameObject.GetComponent<Tweener>();
-        particle = gameObject.GetComponent<ParticleSystem>();
+        wallSoundTrig = false;
     }
     void Update() {
 
-        SetAnim();
+        HandleAnim();
 
         if (Input.GetKeyDown(KeyCode.D)) {
             lastInput = KeyCode.D;
@@ -97,7 +98,17 @@ public class PacStudentController : MonoBehaviour
                     tweener.AddTween(transform, transform.position, endPos, 2f);
                 }
             }
+
+            if (!(animator.GetBool("isMoving"))) {
+                soundSource.clip = soundClips[2];
+            }
+
+            if (!soundSource.isPlaying && wallSoundTrig) {
+                soundSource.Play();
+                wallSoundTrig = false;
+            }
         } else {
+            wallSoundTrig = true;
             HandleAudio();
         }
 
@@ -142,7 +153,7 @@ public class PacStudentController : MonoBehaviour
         return false;
     }
 
-    void SetAnim() {
+    void HandleAnim() {
 
         bool isMoving = false;
         bool isUp = false;
@@ -152,13 +163,6 @@ public class PacStudentController : MonoBehaviour
 
         if (transform.position != prevPos) {
             isMoving = true;
-            if (!particle.isPlaying) {
-                particle.Play();
-            }
-        } else {
-            if (particle.isPlaying) {
-                particle.Stop();
-            }
         }
 
         if (transform.position.x > prevPos.x) {
@@ -179,6 +183,19 @@ public class PacStudentController : MonoBehaviour
         animator.SetBool("goingDown", isDown);
         animator.SetBool("goingLeft", isLeft);
         animator.SetBool("goingRight", isRight);
+
+        if (isMoving) {
+
+            if (!particle.isPlaying) {
+                particle.Play();
+            }
+
+        } else {
+
+            if (particle.isPlaying) {
+                particle.Stop();
+            }
+        }
     }
 
     void HandleAudio() {
