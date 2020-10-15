@@ -161,8 +161,6 @@ public class PacStudentController : MonoBehaviour
             }
         }
 
-        Debug.Log(particle.isPlaying);
-
         if (transform.position.x > prevPos.x) {
             isRight = true;
         }

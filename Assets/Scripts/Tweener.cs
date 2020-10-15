@@ -6,13 +6,10 @@ public class Tweener : MonoBehaviour
 {
     private List<Tween> activeTweens;
 
-    float t;
-
     private void Awake() {
         activeTweens = new List<Tween>();
     }
     private void Start() {
-        t = 0f;
     }
 
     private void Update() {
@@ -20,8 +17,8 @@ public class Tweener : MonoBehaviour
             for (int i = 0; i < activeTweens.Count; i++) {
 
                 if (Vector3.Distance(activeTweens[i].Target.position, activeTweens[i].EndPos) > 0.008f) {
-                    t += activeTweens[i].Rate * Time.deltaTime;
-                    activeTweens[i].Target.position = Vector3.Lerp(activeTweens[i].StartPos, activeTweens[i].EndPos, t);
+                    activeTweens[i].T += activeTweens[i].Rate * Time.deltaTime;
+                    activeTweens[i].Target.position = Vector3.Lerp(activeTweens[i].StartPos, activeTweens[i].EndPos, activeTweens[i].T);
                 } else {
                     activeTweens[i].Target.position = activeTweens[i].EndPos;
                     activeTweens.Remove(activeTweens[i]);
@@ -41,7 +38,6 @@ public class Tweener : MonoBehaviour
 
     public bool AddTween(Transform targetObject, Vector3 startPos, Vector3 endPos, float rate) {
         if (!(TweenExists(targetObject))) {
-            t = 0;
             activeTweens.Add(new Tween(targetObject, startPos, endPos, rate));
             return true;
         }

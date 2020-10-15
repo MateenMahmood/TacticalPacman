@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 8422120637350224340}
+  particle: {fileID: 0}
   soundSource: {fileID: 8422120637350224426}
   soundClips:
   - {fileID: 8300000, guid: 693e29e55d5a16848965f633de755d60, type: 3}
