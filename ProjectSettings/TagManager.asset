@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Row
   - QuitButton
+  - teleL
+  - teleR
   layers:
   - Default
   - TransparentFX

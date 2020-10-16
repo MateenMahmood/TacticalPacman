@@ -63,6 +63,7 @@ public class PacStudentController : MonoBehaviour
     void Update() {
 
         HandleAnim();
+        CollisionHandler();
 
         if (Input.GetKeyDown(KeyCode.D)) {
             lastInput = KeyCode.D;
@@ -92,12 +93,14 @@ public class PacStudentController : MonoBehaviour
                 // Walkable
                 currentInput = lastInput;
                 tweener.AddTween(transform, transform.position, endPos, 2f);
+                Debug.Log(mapPos);
             } else {
                 // Not Walkable
                 // Check previous input
                 if (isWalkable(currentInput)) {
                     tweener.AddTween(transform, transform.position, endPos, 2f);
                 }
+                Debug.Log(mapPos);
             }
 
             if (!(animator.GetBool("isMoving"))) {
@@ -115,6 +118,38 @@ public class PacStudentController : MonoBehaviour
         }
 
         prevPos = transform.position;
+    }
+
+    void CollisionHandler() {
+        Vector2 rayOrigin = transform.position;
+        Vector2 rayDirect = transform.forward;
+        
+        RaycastHit2D hit2D = Physics2D.Raycast(rayOrigin, rayDirect);
+        Debug.DrawRay(rayOrigin, rayDirect);
+
+        if (hit2D) {
+            // Check if the gameObject has a collider
+            if (hit2D.collider != null) {
+                
+                // Left Teleporter
+                if (hit2D.collider.gameObject.tag == "teleL") {
+                    Debug.Log("Collision at Left Teleporter");
+                    TeleportPlayer(new Vector3(8.48f, -4.64f, transform.position.z), new Vector2Int(14, 26));
+                }
+                // Right Teleporter
+                if (hit2D.collider.gameObject.tag == "teleR") {
+                    Debug.Log("Collision at Right Teleporter");
+                    TeleportPlayer(new Vector3(0.48f, -4.64f, transform.position.z), new Vector2Int(14, 1));
+                }
+            }
+        }
+    }
+
+    void TeleportPlayer(Vector3 pos, Vector2Int mapCoord) {
+        if (!(tweener.TweenExists(transform))) {
+            gameObject.transform.position = pos;
+            mapPos = mapCoord;
+        }
     }
 
     bool isWalkable(KeyCode keyCode) {
