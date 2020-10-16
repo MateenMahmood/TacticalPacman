@@ -93,14 +93,12 @@ public class PacStudentController : MonoBehaviour
                 // Walkable
                 currentInput = lastInput;
                 tweener.AddTween(transform, transform.position, endPos, 2f);
-                Debug.Log(mapPos);
             } else {
                 // Not Walkable
                 // Check previous input
                 if (isWalkable(currentInput)) {
                     tweener.AddTween(transform, transform.position, endPos, 2f);
                 }
-                Debug.Log(mapPos);
             }
 
             if (!(animator.GetBool("isMoving"))) {
@@ -108,8 +106,8 @@ public class PacStudentController : MonoBehaviour
             }
 
             if (!soundSource.isPlaying && wallSoundTrig) {
-                soundSource.Play();
                 Instantiate(wallColl, transform.position, Quaternion.identity);
+                soundSource.Play();
                 wallSoundTrig = false;
             }
         } else {
@@ -140,6 +138,13 @@ public class PacStudentController : MonoBehaviour
                 if (hit2D.collider.gameObject.tag == "teleR") {
                     Debug.Log("Collision at Right Teleporter");
                     TeleportPlayer(new Vector3(0.48f, -4.64f, transform.position.z), new Vector2Int(14, 1));
+                }
+
+                // Normal Pellet
+                if (hit2D.collider.gameObject.tag == "pellet") {
+                    Debug.Log("+10 Points :D");
+                    levelMap[mapPos.x, mapPos.y] = 0;
+                    Destroy(hit2D.collider.gameObject);
                 }
             }
         }
@@ -236,14 +241,19 @@ public class PacStudentController : MonoBehaviour
     }
 
     void HandleAudio() {
-        // Set Audio Clips
         
-        if (levelMap[mapPos.x, mapPos.y] == 0) {
-            soundSource.clip = soundClips[0];
-        }
         
-        if (levelMap[mapPos.x, mapPos.y] == 5) {
-            soundSource.clip = soundClips[1];
+        if (transform.position != prevPos) {
+            if (levelMap[mapPos.x, mapPos.y] == 0 || levelMap[mapPos.x, mapPos.y] == 5) {
+                soundSource.clip = soundClips[0];
+                wallSoundTrig = true;
+            }
+        } else {
+            if (wallSoundTrig) {
+                soundSource.clip = soundClips[2];
+                wallSoundTrig = false;
+                Debug.Log("Do I ever run?");
+            }
         }
 
         if (!soundSource.isPlaying) {
