@@ -790,7 +790,7 @@ GameObject:
   - component: {fileID: 869583916}
   m_Layer: 5
   m_Name: ScoreField
-  m_TagString: Untagged
+  m_TagString: localScore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

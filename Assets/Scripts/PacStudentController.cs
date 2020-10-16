@@ -46,7 +46,9 @@ public class PacStudentController : MonoBehaviour
     [SerializeField] GameObject wallColl = null;
     bool wallSoundTrig;
     bool coinSoundTrig;
-    float coinTimer = 0;
+    float coinTimer;
+    public int localScore;
+    UIManager uIManager;
     KeyCode lastInput;
     KeyCode currentInput;
     [SerializeField] AudioSource soundSource = null;
@@ -62,6 +64,8 @@ public class PacStudentController : MonoBehaviour
         tweener = gameObject.GetComponent<Tweener>();
         wallSoundTrig = false;
         coinSoundTrig = false;
+        localScore = 0;
+        uIManager = GameObject.FindGameObjectWithTag("managers").GetComponent<UIManager>();
     }
     void Update() {
 
@@ -145,12 +149,19 @@ public class PacStudentController : MonoBehaviour
 
                 // Normal Pellet
                 if (hit2D.collider.gameObject.tag == "pellet") {
-                    Debug.Log("+10 Points :D");
+                    localScore += 10;
                     levelMap[mapPos.x, mapPos.y] = 0;
                     coinSoundTrig = true;
                     Destroy(hit2D.collider.gameObject);
                 }
+
+                // Cherry
+                if (hit2D.collider.gameObject.tag == "cherry") {
+                    localScore += 100;
+                    Destroy(hit2D.collider.gameObject);
+                }
             }
+            uIManager.UpdateLocalScore(localScore);
         }
     }
 

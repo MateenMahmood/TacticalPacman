@@ -9,6 +9,9 @@ TagManager:
   - teleL
   - teleR
   - pellet
+  - localScore
+  - managers
+  - cherry
   layers:
   - Default
   - TransparentFX
