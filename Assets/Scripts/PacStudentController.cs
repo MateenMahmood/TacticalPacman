@@ -45,6 +45,8 @@ public class PacStudentController : MonoBehaviour
     [SerializeField] ParticleSystem particle = null;
     [SerializeField] GameObject wallColl = null;
     bool wallSoundTrig;
+    bool coinSoundTrig;
+    float coinTimer = 0;
     KeyCode lastInput;
     KeyCode currentInput;
     [SerializeField] AudioSource soundSource = null;
@@ -59,6 +61,7 @@ public class PacStudentController : MonoBehaviour
         mapPos = new Vector2Int(1, 1);
         tweener = gameObject.GetComponent<Tweener>();
         wallSoundTrig = false;
+        coinSoundTrig = false;
     }
     void Update() {
 
@@ -144,6 +147,7 @@ public class PacStudentController : MonoBehaviour
                 if (hit2D.collider.gameObject.tag == "pellet") {
                     Debug.Log("+10 Points :D");
                     levelMap[mapPos.x, mapPos.y] = 0;
+                    coinSoundTrig = true;
                     Destroy(hit2D.collider.gameObject);
                 }
             }
@@ -252,13 +256,21 @@ public class PacStudentController : MonoBehaviour
             if (wallSoundTrig) {
                 soundSource.clip = soundClips[2];
                 wallSoundTrig = false;
-                Debug.Log("Do I ever run?");
             }
         }
 
+        if (soundSource.isPlaying && coinSoundTrig) {
+            soundSource.Stop();
+        }
+
         if (!soundSource.isPlaying) {
-            // Play Audio
-            soundSource.Play();
+
+            if (coinSoundTrig) {
+                soundSource.PlayOneShot(soundClips[1]);
+                coinSoundTrig = false;
+            } else {
+                soundSource.Play();
+            }
         }
     }
 }
