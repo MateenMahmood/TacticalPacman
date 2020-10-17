@@ -12,6 +12,9 @@ TagManager:
   - localScore
   - managers
   - cherry
+  - countdown
+  - localTimer
+  - localGhostTimer
   layers:
   - Default
   - TransparentFX

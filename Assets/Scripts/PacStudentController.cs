@@ -69,60 +69,64 @@ public class PacStudentController : MonoBehaviour
     }
     void Update() {
 
-        HandleAnim();
-        CollisionHandler();
+        if (uIManager.canPlay) {
 
-        if (Input.GetKeyDown(KeyCode.D)) {
-            lastInput = KeyCode.D;
-        }
+            HandleAnim();
+            CollisionHandler();
 
-        if (Input.GetKeyDown(KeyCode.A)) {
-            lastInput = KeyCode.A;
-        }
+            if (Input.GetKeyDown(KeyCode.D)) {
+                lastInput = KeyCode.D;
+            }
 
-        if (Input.GetKeyDown(KeyCode.W)) {
-            lastInput = KeyCode.W;
-        }
+            if (Input.GetKeyDown(KeyCode.A)) {
+                lastInput = KeyCode.A;
+            }
 
-        if (Input.GetKeyDown(KeyCode.S)) {
-            lastInput = KeyCode.S;
-        }
+            if (Input.GetKeyDown(KeyCode.W)) {
+                lastInput = KeyCode.W;
+            }
 
-        if (tweener == null) {
-            Debug.Log("Tweener is null! Script execution is weird");
-        }
+            if (Input.GetKeyDown(KeyCode.S)) {
+                lastInput = KeyCode.S;
+            }
 
-        if (!(tweener.TweenExists(transform))) {
-            // Player is not moving
-            
-            // Right
-            if (isWalkable(lastInput)) {
-                // Walkable
-                currentInput = lastInput;
-                tweener.AddTween(transform, transform.position, endPos, 2f);
-            } else {
-                // Not Walkable
-                // Check previous input
-                if (isWalkable(currentInput)) {
+            if (tweener == null) {
+                Debug.Log("Tweener is null! Script execution is weird");
+            }
+
+            if (!(tweener.TweenExists(transform))) {
+                // Player is not moving
+                
+                // Right
+                if (isWalkable(lastInput)) {
+                    // Walkable
+                    currentInput = lastInput;
                     tweener.AddTween(transform, transform.position, endPos, 2f);
+                } else {
+                    // Not Walkable
+                    // Check previous input
+                    if (isWalkable(currentInput)) {
+                        tweener.AddTween(transform, transform.position, endPos, 2f);
+                    }
                 }
+
+                if (!(animator.GetBool("isMoving"))) {
+                    soundSource.clip = soundClips[2];
+                }
+
+                if (!soundSource.isPlaying && wallSoundTrig) {
+                    Instantiate(wallColl, transform.position, Quaternion.identity);
+                    soundSource.Play();
+                    wallSoundTrig = false;
+                }
+            } else {
+                wallSoundTrig = true;
+                HandleAudio();
             }
 
-            if (!(animator.GetBool("isMoving"))) {
-                soundSource.clip = soundClips[2];
-            }
+            prevPos = transform.position;
 
-            if (!soundSource.isPlaying && wallSoundTrig) {
-                Instantiate(wallColl, transform.position, Quaternion.identity);
-                soundSource.Play();
-                wallSoundTrig = false;
-            }
-        } else {
-            wallSoundTrig = true;
-            HandleAudio();
         }
-
-        prevPos = transform.position;
     }
 
     void CollisionHandler() {
