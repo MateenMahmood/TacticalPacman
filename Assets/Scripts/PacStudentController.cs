@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PacStudentController : MonoBehaviour
 {
+
     int[,] levelMap = {
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7,7,2,2,2,2,2,2,2,2,2,2,2,2,1},
         {2,5,5,5,5,5,5,5,5,5,5,5,5,4,4,5,5,5,5,5,5,5,5,5,5,5,5,2},
@@ -69,6 +70,10 @@ public class PacStudentController : MonoBehaviour
     }
     void Update() {
 
+        CheckPellets();
+
+        uIManager.UpdateLocalScore(localScore);
+
         if (uIManager.canPlay) {
 
             HandleAnim();
@@ -101,12 +106,12 @@ public class PacStudentController : MonoBehaviour
                 if (isWalkable(lastInput)) {
                     // Walkable
                     currentInput = lastInput;
-                    tweener.AddTween(transform, transform.position, endPos, 2f);
+                    tweener.AddTween(transform, transform.position, endPos, 20f);
                 } else {
                     // Not Walkable
                     // Check previous input
                     if (isWalkable(currentInput)) {
-                        tweener.AddTween(transform, transform.position, endPos, 2f);
+                        tweener.AddTween(transform, transform.position, endPos, 20f);
                     }
                 }
 
@@ -123,9 +128,24 @@ public class PacStudentController : MonoBehaviour
                 wallSoundTrig = true;
                 HandleAudio();
             }
+        }
+        prevPos = transform.position;
+    }
 
-            prevPos = transform.position;
-
+    void CheckPellets() {
+        bool flag = true;
+        if (localScore >= 2180) {
+            for (int i = 0; i < levelMap.GetLength(0); i++) {
+                for (int j = 0; j < levelMap.GetLength(1); j++) {
+                    if (levelMap[i,j] == 5) {
+                        flag = false;
+                    }
+                }
+            }
+            if (flag) {
+                HandleAnim();
+                uIManager.DisplayGameOver();
+            }
         }
     }
 
@@ -165,7 +185,6 @@ public class PacStudentController : MonoBehaviour
                     Destroy(hit2D.collider.gameObject);
                 }
             }
-            uIManager.UpdateLocalScore(localScore);
         }
     }
 

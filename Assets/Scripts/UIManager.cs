@@ -14,11 +14,29 @@ public class UIManager : MonoBehaviour {
     float timer;
     #endregion
 
+    #region GetComponents
+    SaveGameManager saveGame;
+    #endregion
+
     public bool canPlay;
 
     private void Start() {
         canPlay = false;
         timer = 0;
+        saveGame = gameObject.GetComponent<SaveGameManager>();
+        GetPlayerPrefs();
+    }
+
+    private void GetPlayerPrefs() {
+        Text highScore = GameObject.FindGameObjectWithTag("localScore").GetComponent<Text>();
+        Text bestTime = GameObject.FindGameObjectWithTag("localTimer").GetComponent<Text>();
+
+        if (highScore != null && bestTime != null) {
+            if (PlayerPrefs.GetString("High Score") != null) {
+                highScore.text = PlayerPrefs.GetInt("High Score").ToString();
+                bestTime.text = TimeFormat(PlayerPrefs.GetFloat("Best Time"));
+            }
+        }
     }
 
     private void Update() {
@@ -69,12 +87,25 @@ public class UIManager : MonoBehaviour {
 
     public void UpdateLocalScore(int scoreToSet) {
         localScore.text = scoreToSet.ToString();
+        if (scoreToSet > PlayerPrefs.GetInt("High Score")) {
+            saveGame.SaveScore(scoreToSet);
+            saveGame.SaveTime(timer);
+        }
+
+        if (scoreToSet == PlayerPrefs.GetInt("High Score") && timer < PlayerPrefs.GetFloat("Best Time")) {
+            saveGame.SaveScore(scoreToSet);
+            saveGame.SaveTime(timer);
+        }
+    }
+
+    public void DisplayGameOver() {
+        countDown.enabled = true;
+        countDown.text = "GAME OVER";
+        canPlay = false;
     }
 
     IEnumerator DisplayStartSequence() {
-        Debug.Log("I can run?");
         if (countDown != null) {
-            Debug.Log("I AM RUNNING!!!");
             countDown.text = "3";
             yield return new WaitForSeconds(1);
             countDown.text = "2";

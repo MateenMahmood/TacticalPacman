@@ -305,7 +305,7 @@ GameObject:
   - component: {fileID: 423360904}
   m_Layer: 5
   m_Name: ScoreField
-  m_TagString: Untagged
+  m_TagString: localScore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -530,7 +530,7 @@ GameObject:
   - component: {fileID: 596987171}
   m_Layer: 5
   m_Name: TimeField
-  m_TagString: Untagged
+  m_TagString: localTimer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -605,6 +605,7 @@ GameObject:
   - component: {fileID: 633185186}
   - component: {fileID: 633185187}
   - component: {fileID: 633185188}
+  - component: {fileID: 633185189}
   m_Layer: 0
   m_Name: Managers
   m_TagString: managers
@@ -639,6 +640,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 461e17867719c03418a57eda10eceebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bestScore: 0
+  bestTime: 
+  canPlay: 0
 --- !u!114 &633185188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -649,6 +653,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b61bd3e8b63a8cb4da14462b44103ed3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &633185189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 633185185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46d72daae6f30cc4183ce9bb1d2e5fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &727700599
