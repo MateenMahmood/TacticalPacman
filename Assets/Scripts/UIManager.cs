@@ -68,10 +68,15 @@ public class UIManager : MonoBehaviour {
     }
 
     public void QuitGame() {
-        UnityEditor.EditorApplication.isPlaying = false;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        Destroy(gameObject);
+        SceneManager.LoadScene(0);
     }
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        if (scene.buildIndex == 0) {
+            GetPlayerPrefs();
+        }
         if (scene.buildIndex == 1) {
 
             Button quitButton = GameObject.FindWithTag("QuitButton").GetComponent<Button>();
