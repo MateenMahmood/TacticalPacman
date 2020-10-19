@@ -42,6 +42,7 @@ public class GhostController : MonoBehaviour {
 
     #region Movement
     string direction;
+    string prevDirection;
     bool inMovement;
     Vector3 prevPos;
     Vector3 endPos;
@@ -69,6 +70,7 @@ public class GhostController : MonoBehaviour {
         walkableValues.Add(5);
         walkableValues.Add(6);
         direction = "up";
+        prevDirection = direction;
         inMovement = true;
         prevPos = transform.position;
         #endregion
@@ -90,8 +92,7 @@ public class GhostController : MonoBehaviour {
     }
 
     void Update() {
-        // Check for tag is purely for debug purposes
-        // Please REMOVE later
+
         if (tag == "G1") {
             if (!tweener.TweenExists(transform)) {
                 if (inMovement) {
@@ -103,6 +104,7 @@ public class GhostController : MonoBehaviour {
                             if (isWalkable(direction)) {
                                 SetMapPos(direction);
                                 tweener.AddTween(transform, transform.position, endPos, 2.1f);
+                                prevDirection = direction;
                             }
                         }
                     }
@@ -114,6 +116,7 @@ public class GhostController : MonoBehaviour {
                             if (isWalkable(direction)) {
                                 SetMapPos(direction);
                                 tweener.AddTween(transform, transform.position, endPos, 2.1f);
+                                prevDirection = direction;
                             }
                         }
                     }
@@ -124,9 +127,16 @@ public class GhostController : MonoBehaviour {
                         direction = G1AI();
                     }
 
+                    if (transform.position == prevPos) {
+                        direction = NotMoving();
+                    }
+
+                    prevPos = transform.position;
+
                     if (isWalkable(direction)) {
                         SetMapPos(direction);
                         tweener.AddTween(transform, transform.position, endPos, 2.1f);
+                        prevDirection = direction;
                         inMovement = true;
                     }
                 }
@@ -189,47 +199,68 @@ public class GhostController : MonoBehaviour {
     string G1AI() {
         Vector2 tempPos = transform.position;
 
-        // Right Case
-        if (isWalkable("right")) {
-            tempPos = transform.position;
-            tempPos.x += 0.32f;
-
-            if (Vector2.Distance(tempPos, player.transform.position) > Vector2.Distance(transform.position, player.transform.position)) {
-                return "right";
-            }
-        }
-
-        // Left Case
-        if (isWalkable("left")) {
-            tempPos = transform.position;
-            tempPos.x -= 0.32f;
-
-            if (Vector2.Distance(tempPos, player.transform.position) > Vector2.Distance(transform.position, player.transform.position)) {
-                return "left";
-            }
-        }
-
         // Up Case
-        if (isWalkable("up")) {
+        if (isWalkable("up") && prevDirection != "down") {
             tempPos = transform.position;
             tempPos.y += 0.32f;
 
-            if (Vector2.Distance(tempPos, player.transform.position) > Vector2.Distance(transform.position, player.transform.position)) {
+            if (Vector2.Distance(tempPos, player.transform.position) >= Vector2.Distance(transform.position, player.transform.position)) {
                 return "up";
             }
         }
 
         // Down Case
-        if (isWalkable("down")) {
+        if (isWalkable("down") && prevDirection != "up") {
             tempPos = transform.position;
             tempPos.y -= 0.32f;
 
-            if (Vector2.Distance(tempPos, player.transform.position) > Vector2.Distance(transform.position, player.transform.position)) {
+            if (Vector2.Distance(tempPos, player.transform.position) >= Vector2.Distance(transform.position, player.transform.position)) {
                 return "down";
+            }
+        }
+
+        // Right Case
+        if (isWalkable("right") && prevDirection != "left") {
+            tempPos = transform.position;
+            tempPos.x += 0.32f;
+
+            if (Vector2.Distance(tempPos, player.transform.position) >= Vector2.Distance(transform.position, player.transform.position)) {
+                return "right";
+            }
+        }
+
+        // Left Case
+        if (isWalkable("left") && prevDirection != "right") {
+            tempPos = transform.position;
+            tempPos.x -= 0.32f;
+
+            if (Vector2.Distance(tempPos, player.transform.position) >= Vector2.Distance(transform.position, player.transform.position)) {
+                return "left";
             }
         }
 
         return "direction";
         
+    }
+
+    string NotMoving() {
+        Debug.Log("Not moving! Will generate new direction...");
+        if (isWalkable("up") && prevDirection != "down") {
+            return "up";
+        }
+
+        if (isWalkable("down") && prevDirection != "up") {
+            return "down";
+        }
+
+        if (isWalkable("right") && prevDirection != "left") {
+            return "right";
+        }
+
+        if (isWalkable("left") && prevDirection != "right") {
+            return "left";
+        }
+
+        return "direction";
     }
 }
