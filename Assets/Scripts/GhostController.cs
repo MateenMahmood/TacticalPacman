@@ -92,53 +92,58 @@ public class GhostController : MonoBehaviour {
     }
 
     void Update() {
-
-        if (tag == "G1") {
-            if (!tweener.TweenExists(transform)) {
-                if (inMovement) {
-                    
-                    if (direction.Equals("right") || direction.Equals("left")) {
-                        if (isWalkable("up") || isWalkable("down")) {
-                            inMovement = false; 
-                        } else {
-                            if (isWalkable(direction)) {
-                                SetMapPos(direction);
-                                tweener.AddTween(transform, transform.position, endPos, 2.1f);
-                                prevDirection = direction;
-                            }
+        if (!tweener.TweenExists(transform)) {
+            if (inMovement) {
+                
+                if (direction.Equals("right") || direction.Equals("left")) {
+                    if (isWalkable("up") || isWalkable("down")) {
+                        inMovement = false; 
+                    } else {
+                        if (isWalkable(direction)) {
+                            SetMapPos(direction);
+                            tweener.AddTween(transform, transform.position, endPos, 2.1f);
+                            prevDirection = direction;
                         }
                     }
+                }
 
-                    if (direction.Equals("up") || direction.Equals("down")) {
-                        if (isWalkable("right") || isWalkable("left")) {
-                            inMovement = false; 
-                        } else {
-                            if (isWalkable(direction)) {
-                                SetMapPos(direction);
-                                tweener.AddTween(transform, transform.position, endPos, 2.1f);
-                                prevDirection = direction;
-                            }
+                if (direction.Equals("up") || direction.Equals("down")) {
+                    if (isWalkable("right") || isWalkable("left")) {
+                        inMovement = false; 
+                    } else {
+                        if (isWalkable(direction)) {
+                            SetMapPos(direction);
+                            tweener.AddTween(transform, transform.position, endPos, 2.1f);
+                            prevDirection = direction;
                         }
                     }
+                }
 
-                } else {
-                    // Decide on the direction
-                    if (tag == "G1") {
-                        direction = G1AI();
-                    }
+            } else {
+                // Decide on the direction
+                if (tag == "G1") {
+                    direction = G1AI();
+                }
 
-                    if (transform.position == prevPos) {
-                        direction = NotMoving();
-                    }
+                if (tag == "G2") {
+                    direction = G2AI();
+                }
 
-                    prevPos = transform.position;
+                if (tag == "G3") {
+                    direction = G3AI();
+                }
 
-                    if (isWalkable(direction)) {
-                        SetMapPos(direction);
-                        tweener.AddTween(transform, transform.position, endPos, 2.1f);
-                        prevDirection = direction;
-                        inMovement = true;
-                    }
+                if (transform.position == prevPos) {
+                    direction = NotMoving();
+                }
+
+                prevPos = transform.position;
+
+                if (isWalkable(direction)) {
+                    SetMapPos(direction);
+                    tweener.AddTween(transform, transform.position, endPos, 2.1f);
+                    prevDirection = direction;
+                    inMovement = true;
                 }
             }
         }
@@ -246,6 +251,81 @@ public class GhostController : MonoBehaviour {
 
         return "direction";
         
+    }
+
+    string G2AI() {
+        Vector2 tempPos = transform.position;
+
+        // Up Case
+        if (isWalkable("up") && prevDirection != "down") {
+            tempPos = transform.position;
+            tempPos.y += 0.32f;
+
+            if (Vector2.Distance(tempPos, player.transform.position) <= Vector2.Distance(transform.position, player.transform.position)) {
+                return "up";
+            }
+        }
+
+        // Down Case
+        if (isWalkable("down") && prevDirection != "up") {
+            tempPos = transform.position;
+            tempPos.y -= 0.32f;
+
+            if (Vector2.Distance(tempPos, player.transform.position) <= Vector2.Distance(transform.position, player.transform.position)) {
+                return "down";
+            }
+        }
+
+        // Right Case
+        if (isWalkable("right") && prevDirection != "left") {
+            tempPos = transform.position;
+            tempPos.x += 0.32f;
+
+            if (Vector2.Distance(tempPos, player.transform.position) <= Vector2.Distance(transform.position, player.transform.position)) {
+                return "right";
+            }
+        }
+
+        // Left Case
+        if (isWalkable("left") && prevDirection != "right") {
+            tempPos = transform.position;
+            tempPos.x -= 0.32f;
+
+            if (Vector2.Distance(tempPos, player.transform.position) <= Vector2.Distance(transform.position, player.transform.position)) {
+                return "left";
+            }
+        }
+
+        return "direction";
+    }
+
+    string G3AI() {
+        int bias = Random.Range(0,4);
+        
+        if (mapPos.x == 14 && mapPos.y == 12) {
+            return "up";
+        }
+        if (mapPos.x == 13 && mapPos.y == 12) {
+            return "up";
+        }
+
+        if (isWalkable("up") && prevDirection != "down" && bias == 0) {
+            return "up";
+        }
+
+        if (isWalkable("down") && prevDirection != "up" && bias == 1) {
+            return "down";
+        }
+
+        if (isWalkable("right") && prevDirection != "left" && bias == 2) {
+            return "right";
+        }
+
+        if (isWalkable("left") && prevDirection != "right" && bias == 3) {
+            return "left";
+        }
+
+        return "direction";
     }
 
     string NotMoving() {
