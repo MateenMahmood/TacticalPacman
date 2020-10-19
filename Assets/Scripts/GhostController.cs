@@ -198,9 +198,14 @@ public class GhostController : MonoBehaviour {
 
     string G1AI() {
         Vector2 tempPos = transform.position;
+        int bias = 0;
+
+        if (Random.value > 0.5f) {
+            bias = 1;
+        }
 
         // Up Case
-        if (isWalkable("up") && prevDirection != "down") {
+        if (isWalkable("up") && prevDirection != "down" && bias == 0) {
             tempPos = transform.position;
             tempPos.y += 0.32f;
 
@@ -210,7 +215,7 @@ public class GhostController : MonoBehaviour {
         }
 
         // Down Case
-        if (isWalkable("down") && prevDirection != "up") {
+        if (isWalkable("down") && prevDirection != "up" && bias == 1) {
             tempPos = transform.position;
             tempPos.y -= 0.32f;
 
@@ -220,7 +225,7 @@ public class GhostController : MonoBehaviour {
         }
 
         // Right Case
-        if (isWalkable("right") && prevDirection != "left") {
+        if (isWalkable("right") && prevDirection != "left" && bias == 1) {
             tempPos = transform.position;
             tempPos.x += 0.32f;
 
@@ -230,7 +235,7 @@ public class GhostController : MonoBehaviour {
         }
 
         // Left Case
-        if (isWalkable("left") && prevDirection != "right") {
+        if (isWalkable("left") && prevDirection != "right" && bias == 0) {
             tempPos = transform.position;
             tempPos.x -= 0.32f;
 
@@ -244,7 +249,6 @@ public class GhostController : MonoBehaviour {
     }
 
     string NotMoving() {
-        Debug.Log("Not moving! Will generate new direction...");
         if (isWalkable("up") && prevDirection != "down") {
             return "up";
         }
