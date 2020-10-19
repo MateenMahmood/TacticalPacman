@@ -133,6 +133,10 @@ public class GhostController : MonoBehaviour {
                     direction = G3AI();
                 }
 
+                if (tag == "G4") {
+                    direction = G4AI();
+                }
+
                 if (transform.position == prevPos) {
                     direction = NotMoving();
                 }
@@ -326,6 +330,69 @@ public class GhostController : MonoBehaviour {
         }
 
         return "direction";
+    }
+
+    string G4AI() {
+        if (mapPos.x == 14 && mapPos.y == 14) {
+            return "up";
+        }
+
+        if (mapPos.x == 13 && mapPos.y == 14) {
+            return "up";
+        }
+
+        if (mapPos.x == 12 && mapPos.y == 14) {
+            return "left";
+        }
+
+        if (mapPos.x == 12 && mapPos.y == 13) {
+            return "up";
+        }
+
+        if (mapPos.x == 12 && mapPos.y == 12) {
+            return "left";
+        }
+
+        if (mapPos.x == 11 && mapPos.y == 12) {
+            return "up";
+        }
+
+        // Top Left
+        if (mapPos.x <= 14 && mapPos.y <= 14) {
+            if (prevDirection == "down" && !(isWalkable("down"))) {
+                return "right";
+            }
+            if (isWalkable("left") && prevDirection != "right") {
+                return "left";
+            }
+            if (isWalkable("up") && prevDirection != "down") {
+                return "up";
+            }
+            if (isWalkable("right") && prevDirection != "left") {
+                return "right";
+            }
+            if (isWalkable("down") && prevDirection != "up") {
+                return "down";
+            }
+        }
+        // Top Right
+        if (mapPos.x <= 14 && mapPos.y >= 14) {
+            if (isWalkable("up") && prevDirection != "down") {
+                return "up";
+            }
+            if (isWalkable("right") && prevDirection != "left") {
+                return "right";
+            }
+            if (isWalkable("down") && !isWalkable("right") && prevDirection != "up") {
+                return "down";
+            }
+            if (isWalkable("left") && prevDirection != "right" && prevDirection == "down") {
+                return "right";
+            }
+            Debug.Log("G4 Reporting Top Right");
+        }
+        Debug.Log(mapPos);
+        return NotMoving();
     }
 
     string NotMoving() {
