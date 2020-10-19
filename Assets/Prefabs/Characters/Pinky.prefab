@@ -187,9 +187,11 @@ GameObject:
   - component: {fileID: 6668369422559303910}
   - component: {fileID: 7108141402566884777}
   - component: {fileID: 8920384741345696607}
+  - component: {fileID: -8721193189207066909}
+  - component: {fileID: 1337639305306455150}
   m_Layer: 0
   m_Name: Pinky
-  m_TagString: Untagged
+  m_TagString: G4
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -279,3 +281,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-8721193189207066909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6987484392558354885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03ccd54142888064895105537b218fdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapPos: {x: 5, y: 5}
+--- !u!114 &1337639305306455150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6987484392558354885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6242db309ed29174caec37b272ff0ff7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

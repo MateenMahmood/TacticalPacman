@@ -107,6 +107,12 @@ public class UIManager : MonoBehaviour {
         countDown.enabled = true;
         countDown.text = "GAME OVER";
         canPlay = false;
+        StartCoroutine(HandleGameOver());
+    }
+
+    IEnumerator HandleGameOver() {
+        yield return new WaitForSeconds(3);
+        QuitGame();
     }
 
     IEnumerator DisplayStartSequence() {

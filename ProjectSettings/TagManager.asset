@@ -15,6 +15,10 @@ TagManager:
   - countdown
   - localTimer
   - localGhostTimer
+  - G1
+  - G2
+  - G3
+  - G4
   layers:
   - Default
   - TransparentFX

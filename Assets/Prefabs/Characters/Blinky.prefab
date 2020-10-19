@@ -187,9 +187,11 @@ GameObject:
   - component: {fileID: 8476229914096193307}
   - component: {fileID: 8476229914096193306}
   - component: {fileID: 8476229914096193301}
+  - component: {fileID: 6549805504555589482}
+  - component: {fileID: -8046189480926785583}
   m_Layer: 0
   m_Name: Blinky
-  m_TagString: Untagged
+  m_TagString: G1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -279,3 +281,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6549805504555589482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8476229914096193300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03ccd54142888064895105537b218fdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapPos: {x: 14, y: 13}
+--- !u!114 &-8046189480926785583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8476229914096193300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6242db309ed29174caec37b272ff0ff7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

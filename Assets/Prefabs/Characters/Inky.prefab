@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 394971781391191517}
   m_Layer: 5
   m_Name: Ghost3Canvas
-  m_TagString: Untagged
+  m_TagString: G3
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -187,9 +187,11 @@ GameObject:
   - component: {fileID: 5690721264745419891}
   - component: {fileID: 9001646510614622069}
   - component: {fileID: 48520112940398243}
+  - component: {fileID: 7844509780892792535}
+  - component: {fileID: -6179520464495889439}
   m_Layer: 0
   m_Name: Inky
-  m_TagString: Untagged
+  m_TagString: G3
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -279,3 +281,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7844509780892792535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7232386795553926785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03ccd54142888064895105537b218fdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapPos: {x: 5, y: 5}
+--- !u!114 &-6179520464495889439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7232386795553926785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6242db309ed29174caec37b272ff0ff7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

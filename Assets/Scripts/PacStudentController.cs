@@ -106,12 +106,12 @@ public class PacStudentController : MonoBehaviour
                 if (isWalkable(lastInput)) {
                     // Walkable
                     currentInput = lastInput;
-                    tweener.AddTween(transform, transform.position, endPos, 20f);
+                    tweener.AddTween(transform, transform.position, endPos, 2f);
                 } else {
                     // Not Walkable
                     // Check previous input
                     if (isWalkable(currentInput)) {
-                        tweener.AddTween(transform, transform.position, endPos, 20f);
+                        tweener.AddTween(transform, transform.position, endPos, 2f);
                     }
                 }
 
