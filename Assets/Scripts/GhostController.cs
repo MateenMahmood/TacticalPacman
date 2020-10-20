@@ -377,21 +377,45 @@ public class GhostController : MonoBehaviour {
         }
         // Top Right
         if (mapPos.x <= 14 && mapPos.y >= 14) {
+            if (isWalkable("down") && prevDirection == "left" && prevDirection != "up") {
+                return "down";
+            }
+
             if (isWalkable("up") && prevDirection != "down") {
                 return "up";
             }
+
             if (isWalkable("right") && prevDirection != "left") {
                 return "right";
             }
+
             if (isWalkable("down") && !isWalkable("right") && prevDirection != "up") {
                 return "down";
             }
+
             if (isWalkable("left") && prevDirection != "right" && prevDirection == "down") {
                 return "right";
             }
-            Debug.Log("G4 Reporting Top Right");
         }
-        Debug.Log(mapPos);
+
+        // Bottom Left
+        if (mapPos.x > 14 && mapPos.y <= 14) {
+            Debug.Log("G4 Reporting Bot Left");
+        }
+
+        // Bottom Right
+        if (mapPos.x > 14 && mapPos.y >= 14) {
+            if (isWalkable("right") && prevDirection == "down") {
+                return "right";
+            }
+            if (isWalkable("left") && prevDirection == "left") {
+                return "left";
+            }
+            if (isWalkable("left") && prevDirection == "up") {
+                return "left";
+            }
+            return NotMoving();
+        }
         return NotMoving();
     }
 
