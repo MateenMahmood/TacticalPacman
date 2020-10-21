@@ -56,12 +56,14 @@ public class GhostController : MonoBehaviour {
 
     #region Player Information
     GameObject player;
+    PacStudentController playerController;
     #endregion
 
     void Start() {
         #region GetComponents
         uIManager = GameObject.FindGameObjectWithTag("managers").GetComponent<UIManager>();
         player = GameObject.FindGameObjectWithTag("Player");
+        playerController = player.GetComponent<PacStudentController>();
         tweener = gameObject.GetComponent<Tweener>();
         animator = gameObject.GetComponent<Animator>();
         #endregion
@@ -160,6 +162,26 @@ public class GhostController : MonoBehaviour {
         }
     }
 
+    public void ResetPositions() {
+        if (playerController.lives == 0) {
+            if (tag == "G1") {
+                transform.position = new Vector3(4.16f, -4.48f, 0);
+            }
+
+            if (tag == "G2") {
+                transform.position = new Vector3(4.8f, -4.48f, 0);
+            }
+
+            if (tag == "G3") {
+                transform.position = new Vector3(3.84f, -4.48f, 0);
+            }
+
+            if (tag == "G4") {
+                transform.position = new Vector3(4.48f, -4.48f, 0);
+            }
+        }
+    }
+
     void UpdateAnims(string direction) {
 
         animator.SetBool("isMoving", false);
@@ -248,6 +270,8 @@ public class GhostController : MonoBehaviour {
             endPos.y -= 0.32f;
         }
     }
+
+    #region Ghost AI
 
     string G1AI() {
         Vector2 tempPos = transform.position;
@@ -474,6 +498,8 @@ public class GhostController : MonoBehaviour {
         }
         return NotMoving();
     }
+
+    #endregion
 
     string NotMoving() {
         if (isWalkable("up") && prevDirection != "down") {

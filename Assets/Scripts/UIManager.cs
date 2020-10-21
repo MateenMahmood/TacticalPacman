@@ -16,6 +16,9 @@ public class UIManager : MonoBehaviour {
 
     #region GetComponents
     SaveGameManager saveGame;
+    GameObject life1;
+    GameObject life2;
+    GameObject life3;
     #endregion
 
     public bool canPlay;
@@ -108,6 +111,28 @@ public class UIManager : MonoBehaviour {
         countDown.text = "GAME OVER";
         canPlay = false;
         StartCoroutine(HandleGameOver());
+    }
+
+    public void UpdateLives(int lives) {
+        life1 = GameObject.FindGameObjectWithTag("L1");
+        life2 = GameObject.FindGameObjectWithTag("L2");
+        life3 = GameObject.FindGameObjectWithTag("L3");
+
+        life1.SetActive(false);
+        life2.SetActive(false);
+        life3.SetActive(false);
+
+        if (lives == 3) {
+            life3.SetActive(true);
+        }
+        
+        if (lives >= 2) {
+            life2.SetActive(true);
+        }
+
+        if (lives >= 1) {
+            life1.SetActive(true);
+        }
     }
 
     IEnumerator HandleGameOver() {

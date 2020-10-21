@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerState {
+    Normal,
+    Power
+}
+
 public class PacStudentController : MonoBehaviour
 {
 
@@ -49,11 +54,13 @@ public class PacStudentController : MonoBehaviour
     bool coinSoundTrig;
     float coinTimer;
     public int localScore;
+    public int lives;
     UIManager uIManager;
     KeyCode lastInput;
     KeyCode currentInput;
     [SerializeField] AudioSource soundSource = null;
     [SerializeField] List<AudioClip> soundClips = null;
+    PlayerState playerState;
 
     void Start() {
         walkableValues = new List<int>();
@@ -66,6 +73,8 @@ public class PacStudentController : MonoBehaviour
         wallSoundTrig = false;
         coinSoundTrig = false;
         localScore = 0;
+        lives = 3;
+        playerState = PlayerState.Normal;
         uIManager = GameObject.FindGameObjectWithTag("managers").GetComponent<UIManager>();
     }
     void Update() {
@@ -159,30 +168,49 @@ public class PacStudentController : MonoBehaviour
         if (hit2D) {
             // Check if the gameObject has a collider
             if (hit2D.collider != null) {
+
+                string colliderTag = hit2D.collider.gameObject.tag;
                 
                 // Left Teleporter
-                if (hit2D.collider.gameObject.tag == "teleL") {
+                if (colliderTag == "teleL") {
                     Debug.Log("Collision at Left Teleporter");
                     TeleportPlayer(new Vector3(8.48f, -4.64f, transform.position.z), new Vector2Int(14, 26));
                 }
                 // Right Teleporter
-                if (hit2D.collider.gameObject.tag == "teleR") {
+                if (colliderTag == "teleR") {
                     Debug.Log("Collision at Right Teleporter");
                     TeleportPlayer(new Vector3(0.48f, -4.64f, transform.position.z), new Vector2Int(14, 1));
                 }
 
                 // Normal Pellet
-                if (hit2D.collider.gameObject.tag == "pellet") {
+                if (colliderTag == "pellet") {
                     localScore += 10;
                     levelMap[mapPos.x, mapPos.y] = 0;
                     coinSoundTrig = true;
                     Destroy(hit2D.collider.gameObject);
                 }
 
+                // Power Pellet
+                if (colliderTag  == "power") {
+                    levelMap[mapPos.x, mapPos.y] = 0;
+                    playerState = PlayerState.Power;
+                    Destroy(hit2D.collider.gameObject);
+                }
+
                 // Cherry
-                if (hit2D.collider.gameObject.tag == "cherry") {
+                if (colliderTag == "cherry") {
                     localScore += 100;
                     Destroy(hit2D.collider.gameObject);
+                }
+
+                // Any Ghost
+                if (colliderTag == "G1" || colliderTag == "G2" || colliderTag == "G3" || colliderTag == "G4") {
+                    lives -= 1;
+                    uIManager.UpdateLives(lives);
+                    mapPos = new Vector2Int(1, 1);
+                    transform.position = new Vector3(0.48f, -0.48f, 0);
+                    playerState = PlayerState.Normal;
+                    
                 }
             }
         }
