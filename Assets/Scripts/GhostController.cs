@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GhostController : MonoBehaviour {
     
-    #region Level Structure
+    #region Level Information
     int[,] levelMap = {
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7,7,2,2,2,2,2,2,2,2,2,2,2,2,1},
         {2,5,5,5,5,5,5,5,5,5,5,5,5,4,4,5,5,5,5,5,5,5,5,5,5,5,5,2},
@@ -38,6 +38,7 @@ public class GhostController : MonoBehaviour {
     };
     List<int> walkableValues;
     Vector2Int mapPos;
+    UIManager uIManager;
     #endregion
 
     #region Movement
@@ -59,6 +60,7 @@ public class GhostController : MonoBehaviour {
 
     void Start() {
         #region GetComponents
+        uIManager = GameObject.FindGameObjectWithTag("managers").GetComponent<UIManager>();
         player = GameObject.FindGameObjectWithTag("Player");
         tweener = gameObject.GetComponent<Tweener>();
         animator = gameObject.GetComponent<Animator>();
@@ -92,63 +94,105 @@ public class GhostController : MonoBehaviour {
     }
 
     void Update() {
-        if (!tweener.TweenExists(transform)) {
-            if (inMovement) {
-                
-                if (direction.Equals("right") || direction.Equals("left")) {
-                    if (isWalkable("up") || isWalkable("down")) {
-                        inMovement = false; 
-                    } else {
-                        if (isWalkable(direction)) {
-                            SetMapPos(direction);
-                            tweener.AddTween(transform, transform.position, endPos, 2.1f);
-                            prevDirection = direction;
+        if (uIManager.canPlay) {
+            if (!tweener.TweenExists(transform)) {
+                if (inMovement) {
+
+                    UpdateAnims(direction);
+                    
+                    if (direction.Equals("right") || direction.Equals("left")) {
+                        if (isWalkable("up") || isWalkable("down")) {
+                            inMovement = false; 
+                        } else {
+                            if (isWalkable(direction)) {
+                                SetMapPos(direction);
+                                tweener.AddTween(transform, transform.position, endPos, 2.1f);
+                                prevDirection = direction;
+                            }
                         }
                     }
-                }
 
-                if (direction.Equals("up") || direction.Equals("down")) {
-                    if (isWalkable("right") || isWalkable("left")) {
-                        inMovement = false; 
-                    } else {
-                        if (isWalkable(direction)) {
-                            SetMapPos(direction);
-                            tweener.AddTween(transform, transform.position, endPos, 2.1f);
-                            prevDirection = direction;
+                    if (direction.Equals("up") || direction.Equals("down")) {
+                        if (isWalkable("right") || isWalkable("left")) {
+                            inMovement = false; 
+                        } else {
+                            if (isWalkable(direction)) {
+                                SetMapPos(direction);
+                                tweener.AddTween(transform, transform.position, endPos, 2.1f);
+                                prevDirection = direction;
+                            }
                         }
                     }
-                }
 
+                } else {
+                    // Decide on the direction
+                    if (tag == "G1") {
+                        direction = G1AI();
+                    }
+
+                    if (tag == "G2") {
+                        direction = G2AI();
+                    }
+
+                    if (tag == "G3") {
+                        direction = G3AI();
+                    }
+
+                    if (tag == "G4") {
+                        direction = G4AI();
+                    }
+
+                    if (transform.position == prevPos) {
+                        direction = NotMoving();
+                    }
+
+                    prevPos = transform.position;
+
+                    if (isWalkable(direction)) {
+                        SetMapPos(direction);
+                        tweener.AddTween(transform, transform.position, endPos, 2.1f);
+                        prevDirection = direction;
+                        inMovement = true;
+                    }
+                }
+            }
+            UpdateAnims(direction);
+        }
+    }
+
+    void UpdateAnims(string direction) {
+
+        animator.SetBool("isMoving", false);
+        animator.SetBool("isLeft", false);
+        animator.SetBool("isRight", false);
+        animator.SetBool("isUp", false);
+        animator.SetBool("isDown", false);
+        animator.SetBool("isScared", false);
+        animator.SetBool("isDead", false);
+        animator.SetBool("isRecovering", false);
+
+
+        if (!(animator.GetBool("isDead") || animator.GetBool("isScared") || animator.GetBool("isRecovering"))) {
+            if (!uIManager.canPlay) {
+                animator.SetBool("isMoving", false);
             } else {
-                // Decide on the direction
-                if (tag == "G1") {
-                    direction = G1AI();
-                }
+                animator.SetBool("isMoving", true);
+            }
 
-                if (tag == "G2") {
-                    direction = G2AI();
-                }
+            if (direction == "left") {
+                animator.SetBool("isLeft", true);
+            }
 
-                if (tag == "G3") {
-                    direction = G3AI();
-                }
+            if (direction == "right") {
+                animator.SetBool("isRight", true);
+            }
 
-                if (tag == "G4") {
-                    direction = G4AI();
-                }
+            if (direction == "up") {
+                animator.SetBool("isUp", true);
+            }
 
-                if (transform.position == prevPos) {
-                    direction = NotMoving();
-                }
-
-                prevPos = transform.position;
-
-                if (isWalkable(direction)) {
-                    SetMapPos(direction);
-                    tweener.AddTween(transform, transform.position, endPos, 2.1f);
-                    prevDirection = direction;
-                    inMovement = true;
-                }
+            if (direction == "down") {
+                animator.SetBool("isDown", true);
             }
         }
     }
@@ -400,7 +444,19 @@ public class GhostController : MonoBehaviour {
 
         // Bottom Left
         if (mapPos.x > 14 && mapPos.y <= 14) {
-            Debug.Log("G4 Reporting Bot Left");
+            if (isWalkable("down") && prevDirection == "left") {
+                return "down";
+            }
+
+            if (isWalkable("up") && !isWalkable("left")) {
+                return "up";
+            }
+
+            if (isWalkable("left") && prevDirection != "right") {
+                return "left";
+            }
+
+            return NotMoving();
         }
 
         // Bottom Right

@@ -54,7 +54,7 @@ public class UIManager : MonoBehaviour {
         int timeInInt = (int)time;
         int min = timeInInt / 60;
         int sec = timeInInt % 60;
-        float mil = (time * 1000) % 1000;
+        float mil = (time * 100) % 100;
 
         string timeFormat = String.Format("{0:00}:{1:00}:{2:00}",
         min, sec, mil);
