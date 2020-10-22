@@ -24,6 +24,7 @@ TagManager:
   - L2
   - L3
   - LevelGen
+  - GTimer
   layers:
   - Default
   - TransparentFX

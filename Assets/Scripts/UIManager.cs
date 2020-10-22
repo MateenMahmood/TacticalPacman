@@ -11,7 +11,10 @@ public class UIManager : MonoBehaviour {
     Text localScore;
     Text countDown;
     Text localTimer;
+    Text localGhostLabel;
+    Text localGhostTimer;
     float timer;
+    float gTimer;
     #endregion
 
     #region GetComponents
@@ -26,6 +29,7 @@ public class UIManager : MonoBehaviour {
     private void Start() {
         canPlay = false;
         timer = 0;
+        gTimer = 10;
         saveGame = gameObject.GetComponent<SaveGameManager>();
         GetPlayerPrefs();
     }
@@ -33,6 +37,7 @@ public class UIManager : MonoBehaviour {
     private void GetPlayerPrefs() {
         Text highScore = GameObject.FindGameObjectWithTag("localScore").GetComponent<Text>();
         Text bestTime = GameObject.FindGameObjectWithTag("localTimer").GetComponent<Text>();
+        
 
         if (highScore != null && bestTime != null) {
             if (PlayerPrefs.GetString("High Score") != null) {
@@ -48,8 +53,19 @@ public class UIManager : MonoBehaviour {
                 timer += Time.deltaTime;
 
                 localTimer.text = TimeFormat(timer);
-
             }
+
+            if (localGhostTimer != null) {
+                if (gTimer > 0) {
+                    gTimer -= Time.deltaTime;
+
+                    localGhostTimer.text = TimeFormat(gTimer);
+                } else {
+                    localGhostLabel.enabled = false;
+                    localGhostTimer.enabled = false;
+                }
+            }
+
         }
     }
 
@@ -88,6 +104,8 @@ public class UIManager : MonoBehaviour {
             localScore = GameObject.FindGameObjectWithTag("localScore").GetComponent<Text>();
             countDown = GameObject.FindGameObjectWithTag("countdown").GetComponent<Text>();
             localTimer = GameObject.FindGameObjectWithTag("localTimer").GetComponent<Text>();
+            localGhostLabel = GameObject.FindGameObjectWithTag("GTimer").GetComponent<Text>();
+            localGhostTimer = GameObject.FindGameObjectWithTag("localGhostTimer").GetComponent<Text>();
 
             StartCoroutine(DisplayStartSequence());
         }
@@ -104,6 +122,12 @@ public class UIManager : MonoBehaviour {
             saveGame.SaveScore(scoreToSet);
             saveGame.SaveTime(timer);
         }
+    }
+
+    public void EnableGhostTimer() {
+        gTimer = 10f;
+        localGhostLabel.enabled = true;
+        localGhostTimer.enabled = true;
     }
 
     public void DisplayGameOver() {
@@ -137,20 +161,20 @@ public class UIManager : MonoBehaviour {
     }
 
     IEnumerator HandleGameOver() {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSecondsRealtime(3);
         QuitGame();
     }
 
     IEnumerator DisplayStartSequence() {
         if (countDown != null) {
             countDown.text = "3";
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSecondsRealtime(1);
             countDown.text = "2";
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSecondsRealtime(1);
             countDown.text = "1";
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSecondsRealtime(1);
             countDown.text  = "GO!";
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSecondsRealtime(1);
             countDown.enabled = false;
             canPlay = true;
         }

@@ -204,8 +204,7 @@ public class PacStudentController : MonoBehaviour
 
                 // Power Pellet
                 if (colliderTag  == "power") {
-                    levelMap[mapPos.x, mapPos.y] = 0;
-                    playerState = PlayerState.Power;
+                    HandlePower();
                     Destroy(hit2D.collider.gameObject);
                 }
 
@@ -216,12 +215,24 @@ public class PacStudentController : MonoBehaviour
                 }
 
                 // Any Ghost
-                if (colliderTag == "G1" || colliderTag == "G2" || colliderTag == "G3" || colliderTag == "G4") {
+                if ((colliderTag == "G1" || colliderTag == "G2" || colliderTag == "G3" || colliderTag == "G4") && playerState == PlayerState.Normal) {
                     Debug.Log("Raycast has collided");
                     playerState = PlayerState.Dead;
                 }
             }
         }
+    }
+
+    void HandlePower() {
+        levelMap[mapPos.x, mapPos.y] = 0;
+        playerState = PlayerState.Power;
+        uIManager.EnableGhostTimer();
+        StartCoroutine(PowerCount());
+    }
+
+    IEnumerator PowerCount() {
+        yield return new WaitForSecondsRealtime(10);
+        playerState = PlayerState.Normal;
     }
 
     void HandleDead() {
@@ -242,6 +253,20 @@ public class PacStudentController : MonoBehaviour
                 if (lives < 0) {
                     lives = 0;
                 }
+
+                animator.SetBool("isMoving", false);
+                animator.SetBool("goingUp", false);
+                animator.SetBool("goingDown", false);
+                animator.SetBool("goingLeft", false);
+                animator.SetBool("goingRight", false);
+
+                Instantiate(wallColl, transform.position, Quaternion.identity);
+                Instantiate(wallColl, transform.position, Quaternion.identity);
+                Instantiate(wallColl, transform.position, Quaternion.identity);
+
+                currentInput = KeyCode.Space;
+                lastInput = KeyCode.Space;
+
                 TeleportPlayer(new Vector3(0.48f, -0.48f, 0), new Vector2Int(1, 1));
                 uIManager.UpdateLives(lives);
                 characterGen.RespawnGhost();
