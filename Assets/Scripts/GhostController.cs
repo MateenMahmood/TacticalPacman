@@ -56,10 +56,7 @@ public class GhostController : MonoBehaviour {
 
     #region Player Information
     GameObject player;
-    bool playerFlag1;
-    bool playerFlag2;
-    bool playerFlag3;
-    bool playerFlag4;
+    bool playerFlag;
     PacStudentController playerController;
     #endregion
 
@@ -81,10 +78,7 @@ public class GhostController : MonoBehaviour {
         prevDirection = direction;
         inMovement = true;
         prevPos = transform.position;
-        playerFlag1 = false;
-        playerFlag2 = false;
-        playerFlag3 = false;
-        playerFlag4 = false;
+        playerFlag = false;
         #endregion
 
         #region mapPos
@@ -104,11 +98,8 @@ public class GhostController : MonoBehaviour {
     }
 
     void Update() {
-        if (uIManager.canPlay) {
+        if (uIManager.canPlay && playerController.playerState != PlayerState.Dead) {
             if (!tweener.TweenExists(transform)) {
-
-                // Check Pacman Lives
-                ResetPositions();
                 
                 if (inMovement) {
 
@@ -176,39 +167,28 @@ public class GhostController : MonoBehaviour {
     }
 
     public void ResetPositions() {
-        if (playerController.playerState == PlayerState.Dead ||
-        playerFlag1 || playerFlag2 || playerFlag3 || playerFlag4) {
-            playerFlag1 = true;
-            playerFlag2 = true;
-            playerFlag3 = true;
-            playerFlag4 = true;
-            if (gameObject.tag == "G1") {
-                transform.position = new Vector3(4.16f, -4.48f, 0);
-                mapPos = new Vector2Int(14, 13);
-                Debug.Log("1 is resetting");
-                playerFlag1 = false;
-            }
+        if (gameObject.tag == "G1") {
+            TeleportGhost(new Vector3(4.16f, -4.48f, 0), new Vector2Int(14, 13));
+            Debug.Log("1 is resetting");
+        }
+        if (gameObject.tag == "G2") {
+            TeleportGhost(new Vector3(4.8f, -4.48f, 0), new Vector2Int(14, 15));
+            Debug.Log("2 is resetting");
+        }
+        if (gameObject.tag == "G3") {
+            TeleportGhost(new Vector3(3.84f, -4.48f, 0), new Vector2Int(14, 12));
+            Debug.Log("3 is resetting");
+        }
+        if (gameObject.tag == "G4") {
+            TeleportGhost(new Vector3(4.48f, -4.48f, 0), new Vector2Int(14, 14));
+            Debug.Log("4 is resetting");
+        }
+    }
 
-            if (gameObject.tag == "G2") {
-                transform.position = new Vector3(4.8f, -4.48f, 0);
-                mapPos = new Vector2Int(14, 15);
-                Debug.Log("2 is resetting");
-                playerFlag2 = false;
-            }
-
-            if (gameObject.tag == "G3") {
-                transform.position = new Vector3(3.84f, -4.48f, 0);
-                mapPos = new Vector2Int(14, 12);
-                Debug.Log("3 is resetting");
-                playerFlag3 = false;
-            }
-
-            if (gameObject.tag == "G4") {
-                transform.position = new Vector3(4.48f, -4.48f, 0);
-                mapPos = new Vector2Int(14, 14);
-                Debug.Log("4 is resetting");
-                playerFlag4 = false;
-            }
+    void TeleportGhost(Vector3 pos, Vector2Int mapCoord) {
+        if (!(tweener.TweenExists(transform))) {
+            gameObject.transform.position = pos;
+            mapPos = mapCoord;
         }
     }
 
@@ -441,18 +421,6 @@ public class GhostController : MonoBehaviour {
 
         if (mapPos.x == 12 && mapPos.y == 14) {
             return "left";
-        }
-
-        if (mapPos.x == 12 && mapPos.y == 13) {
-            return "up";
-        }
-
-        if (mapPos.x == 12 && mapPos.y == 12) {
-            return "left";
-        }
-
-        if (mapPos.x == 11 && mapPos.y == 12) {
-            return "up";
         }
 
         // Top Left

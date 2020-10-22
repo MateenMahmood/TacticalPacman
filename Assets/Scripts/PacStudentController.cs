@@ -57,11 +57,16 @@ public class PacStudentController : MonoBehaviour
     public int localScore;
     int lives;
     UIManager uIManager;
+    CharacterGen characterGen;
     KeyCode lastInput;
     KeyCode currentInput;
     [SerializeField] AudioSource soundSource = null;
     [SerializeField] List<AudioClip> soundClips = null;
     public PlayerState playerState;
+    GameObject ghost1;
+    GameObject ghost2;
+    GameObject ghost3;
+    GameObject ghost4;
 
     void Start() {
         walkableValues = new List<int>();
@@ -77,6 +82,11 @@ public class PacStudentController : MonoBehaviour
         lives = 3;
         playerState = PlayerState.Normal;
         uIManager = GameObject.FindGameObjectWithTag("managers").GetComponent<UIManager>();
+        characterGen = GameObject.FindGameObjectWithTag("LevelGen").GetComponent<CharacterGen>();
+        ghost1 = GameObject.FindGameObjectWithTag("G1");
+        ghost2 = GameObject.FindGameObjectWithTag("G2");
+        ghost3 = GameObject.FindGameObjectWithTag("G3");
+        ghost4 = GameObject.FindGameObjectWithTag("G4");
     }
     void Update() {
 
@@ -166,7 +176,6 @@ public class PacStudentController : MonoBehaviour
         Vector2 rayDirect = transform.forward;
         
         RaycastHit2D hit2D = Physics2D.Raycast(rayOrigin, rayDirect);
-        Debug.DrawRay(rayOrigin, rayDirect);
 
         if (hit2D) {
             // Check if the gameObject has a collider
@@ -207,7 +216,8 @@ public class PacStudentController : MonoBehaviour
                 }
 
                 // Any Ghost
-                if (colliderTag == "G1" || colliderTag == "G2" || colliderTag == "G3" || colliderTag == "G4" || playerState == PlayerState.Dead) {
+                if (colliderTag == "G1" || colliderTag == "G2" || colliderTag == "G3" || colliderTag == "G4") {
+                    Debug.Log("Raycast has collided");
                     playerState = PlayerState.Dead;
                 }
             }
@@ -217,10 +227,24 @@ public class PacStudentController : MonoBehaviour
     void HandleDead() {
         if (playerState == PlayerState.Dead) {
             if (!tweener.TweenExists(transform)) {
+                ghost1 = GameObject.FindGameObjectWithTag("G1");
+                ghost2 = GameObject.FindGameObjectWithTag("G2");
+                ghost3 = GameObject.FindGameObjectWithTag("G3");
+                ghost4 = GameObject.FindGameObjectWithTag("G4");
+                
+                Destroy(ghost1);
+                Destroy(ghost2);
+                Destroy(ghost3);
+                Destroy(ghost4);
                 lives -= 1;
-                mapPos = new Vector2Int(1, 1);
-                transform.position = new Vector3(0.48f, -0.48f, 0);
+
+                // Never set lives to less than 0
+                if (lives < 0) {
+                    lives = 0;
+                }
+                TeleportPlayer(new Vector3(0.48f, -0.48f, 0), new Vector2Int(1, 1));
                 uIManager.UpdateLives(lives);
+                characterGen.RespawnGhost();
                 playerState = PlayerState.Normal;
             }
         }

@@ -22,4 +22,15 @@ public class CharacterGen : MonoBehaviour
         pinky.GetComponentInChildren<Canvas>().worldCamera = mainCamera;
         clyde.GetComponentInChildren<Canvas>().worldCamera = mainCamera;
     }
+
+    public void RespawnGhost() {
+        GameObject inky = Instantiate(Inky, new Vector3(3.84f, -4.48f, 0), Quaternion.identity);
+        GameObject blinky = Instantiate(Blinky, new Vector3(4.16f, -4.48f, 0), Quaternion.identity);
+        GameObject pinky = Instantiate(Pinky, new Vector3(4.48f, -4.48f, 0), Quaternion.identity);
+        GameObject clyde = Instantiate(Clyde, new Vector3(4.8f, -4.48f, 0), Quaternion.identity);
+        inky.GetComponentInChildren<Canvas>().worldCamera = mainCamera;
+        blinky.GetComponentInChildren<Canvas>().worldCamera = mainCamera;
+        pinky.GetComponentInChildren<Canvas>().worldCamera = mainCamera;
+        clyde.GetComponentInChildren<Canvas>().worldCamera = mainCamera;
+    }
 }
