@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum PlayerState {
     Normal,
+    Dead,
     Power
 }
 
@@ -54,13 +55,13 @@ public class PacStudentController : MonoBehaviour
     bool coinSoundTrig;
     float coinTimer;
     public int localScore;
-    public int lives;
+    int lives;
     UIManager uIManager;
     KeyCode lastInput;
     KeyCode currentInput;
     [SerializeField] AudioSource soundSource = null;
     [SerializeField] List<AudioClip> soundClips = null;
-    PlayerState playerState;
+    public PlayerState playerState;
 
     void Start() {
         walkableValues = new List<int>();
@@ -80,6 +81,8 @@ public class PacStudentController : MonoBehaviour
     void Update() {
 
         CheckPellets();
+
+        HandleDead();
 
         uIManager.UpdateLocalScore(localScore);
 
@@ -204,14 +207,21 @@ public class PacStudentController : MonoBehaviour
                 }
 
                 // Any Ghost
-                if (colliderTag == "G1" || colliderTag == "G2" || colliderTag == "G3" || colliderTag == "G4") {
-                    lives -= 1;
-                    uIManager.UpdateLives(lives);
-                    mapPos = new Vector2Int(1, 1);
-                    transform.position = new Vector3(0.48f, -0.48f, 0);
-                    playerState = PlayerState.Normal;
-                    
+                if (colliderTag == "G1" || colliderTag == "G2" || colliderTag == "G3" || colliderTag == "G4" || playerState == PlayerState.Dead) {
+                    playerState = PlayerState.Dead;
                 }
+            }
+        }
+    }
+
+    void HandleDead() {
+        if (playerState == PlayerState.Dead) {
+            if (!tweener.TweenExists(transform)) {
+                lives -= 1;
+                mapPos = new Vector2Int(1, 1);
+                transform.position = new Vector3(0.48f, -0.48f, 0);
+                uIManager.UpdateLives(lives);
+                playerState = PlayerState.Normal;
             }
         }
     }

@@ -118,9 +118,9 @@ public class UIManager : MonoBehaviour {
         life2 = GameObject.FindGameObjectWithTag("L2");
         life3 = GameObject.FindGameObjectWithTag("L3");
 
-        life1.SetActive(false);
-        life2.SetActive(false);
-        life3.SetActive(false);
+        life1.SetActive(true);
+        life2.SetActive(true);
+        life3.SetActive(true);
 
         if (lives == 3) {
             life3.SetActive(true);

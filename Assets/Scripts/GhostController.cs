@@ -56,6 +56,10 @@ public class GhostController : MonoBehaviour {
 
     #region Player Information
     GameObject player;
+    bool playerFlag1;
+    bool playerFlag2;
+    bool playerFlag3;
+    bool playerFlag4;
     PacStudentController playerController;
     #endregion
 
@@ -77,6 +81,10 @@ public class GhostController : MonoBehaviour {
         prevDirection = direction;
         inMovement = true;
         prevPos = transform.position;
+        playerFlag1 = false;
+        playerFlag2 = false;
+        playerFlag3 = false;
+        playerFlag4 = false;
         #endregion
 
         #region mapPos
@@ -98,6 +106,10 @@ public class GhostController : MonoBehaviour {
     void Update() {
         if (uIManager.canPlay) {
             if (!tweener.TweenExists(transform)) {
+
+                // Check Pacman Lives
+                ResetPositions();
+                
                 if (inMovement) {
 
                     UpdateAnims(direction);
@@ -127,6 +139,7 @@ public class GhostController : MonoBehaviour {
                     }
 
                 } else {
+
                     // Decide on the direction
                     if (tag == "G1") {
                         direction = G1AI();
@@ -163,21 +176,38 @@ public class GhostController : MonoBehaviour {
     }
 
     public void ResetPositions() {
-        if (playerController.lives == 0) {
-            if (tag == "G1") {
+        if (playerController.playerState == PlayerState.Dead ||
+        playerFlag1 || playerFlag2 || playerFlag3 || playerFlag4) {
+            playerFlag1 = true;
+            playerFlag2 = true;
+            playerFlag3 = true;
+            playerFlag4 = true;
+            if (gameObject.tag == "G1") {
                 transform.position = new Vector3(4.16f, -4.48f, 0);
+                mapPos = new Vector2Int(14, 13);
+                Debug.Log("1 is resetting");
+                playerFlag1 = false;
             }
 
-            if (tag == "G2") {
+            if (gameObject.tag == "G2") {
                 transform.position = new Vector3(4.8f, -4.48f, 0);
+                mapPos = new Vector2Int(14, 15);
+                Debug.Log("2 is resetting");
+                playerFlag2 = false;
             }
 
-            if (tag == "G3") {
+            if (gameObject.tag == "G3") {
                 transform.position = new Vector3(3.84f, -4.48f, 0);
+                mapPos = new Vector2Int(14, 12);
+                Debug.Log("3 is resetting");
+                playerFlag3 = false;
             }
 
-            if (tag == "G4") {
+            if (gameObject.tag == "G4") {
                 transform.position = new Vector3(4.48f, -4.48f, 0);
+                mapPos = new Vector2Int(14, 14);
+                Debug.Log("4 is resetting");
+                playerFlag4 = false;
             }
         }
     }
