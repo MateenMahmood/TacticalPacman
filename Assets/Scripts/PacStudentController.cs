@@ -216,8 +216,16 @@ public class PacStudentController : MonoBehaviour
 
                 // Any Ghost
                 if ((colliderTag == "G1" || colliderTag == "G2" || colliderTag == "G3" || colliderTag == "G4") && playerState == PlayerState.Normal) {
-                    Debug.Log("Raycast has collided");
+                    Debug.Log("Player Reporting Death");
                     playerState = PlayerState.Dead;
+                }
+
+                if ((colliderTag == "G1" || colliderTag == "G2" || colliderTag == "G3" || colliderTag == "G4") && playerState == PlayerState.Power) {
+                    GhostController tempController = hit2D.collider.GetComponent<GhostController>();
+                    if (tempController.ghostState != GhostState.Dead) {
+                        Debug.Log("Player Reporting Ghost Kill");
+                        tempController.HandleDeath();
+                    }
                 }
             }
         }

@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum GhostState {
+    Normal,
+    Scared,
+    Recovering,
+    Dead
+}
+
 public class GhostController : MonoBehaviour {
     
     #region Level Information
@@ -56,8 +63,12 @@ public class GhostController : MonoBehaviour {
 
     #region Player Information
     GameObject player;
-    bool playerFlag;
     PacStudentController playerController;
+    #endregion
+
+    #region Ghost Information
+    public GhostState ghostState;
+    bool stateFlag;
     #endregion
 
     void Start() {
@@ -78,7 +89,8 @@ public class GhostController : MonoBehaviour {
         prevDirection = direction;
         inMovement = true;
         prevPos = transform.position;
-        playerFlag = false;
+        ghostState = GhostState.Normal;
+        stateFlag = true;
         #endregion
 
         #region mapPos
@@ -100,6 +112,8 @@ public class GhostController : MonoBehaviour {
     void Update() {
         if (uIManager.canPlay && playerController.playerState != PlayerState.Dead) {
             if (!tweener.TweenExists(transform)) {
+
+                HandleState();
                 
                 if (inMovement) {
 
@@ -132,20 +146,23 @@ public class GhostController : MonoBehaviour {
                 } else {
 
                     // Decide on the direction
-                    if (tag == "G1") {
+                    if (tag == "G1" || ghostState == GhostState.Scared) {
                         direction = G1AI();
-                    }
-
-                    if (tag == "G2") {
+                    } else {
+                        if (tag == "G1") {
+                            direction = G1AI();
+                        }
+                        if (tag == "G2") {
                         direction = G2AI();
-                    }
+                        }
 
-                    if (tag == "G3") {
-                        direction = G3AI();
-                    }
+                        if (tag == "G3") {
+                            direction = G3AI();
+                        }
 
-                    if (tag == "G4") {
-                        direction = G4AI();
+                        if (tag == "G4") {
+                            direction = G4AI();
+                        }
                     }
 
                     if (transform.position == prevPos) {
@@ -166,23 +183,31 @@ public class GhostController : MonoBehaviour {
         }
     }
 
-    public void ResetPositions() {
-        if (gameObject.tag == "G1") {
-            TeleportGhost(new Vector3(4.16f, -4.48f, 0), new Vector2Int(14, 13));
-            Debug.Log("1 is resetting");
+    void HandleState() {
+        if (playerController.playerState == PlayerState.Power) {
+            StartCoroutine(CycleState());
         }
-        if (gameObject.tag == "G2") {
-            TeleportGhost(new Vector3(4.8f, -4.48f, 0), new Vector2Int(14, 15));
-            Debug.Log("2 is resetting");
+    }
+
+    public void HandleDeath() {
+        Debug.Log("Ghost Reporting Death");
+        ghostState = GhostState.Dead;
+        stateFlag = false;
+    }
+
+    IEnumerator CycleState() {
+        if (stateFlag) {
+            ghostState = GhostState.Scared;
         }
-        if (gameObject.tag == "G3") {
-            TeleportGhost(new Vector3(3.84f, -4.48f, 0), new Vector2Int(14, 12));
-            Debug.Log("3 is resetting");
+        yield return new WaitForSecondsRealtime(7);
+        if (stateFlag) {
+            ghostState = GhostState.Recovering;
         }
-        if (gameObject.tag == "G4") {
-            TeleportGhost(new Vector3(4.48f, -4.48f, 0), new Vector2Int(14, 14));
-            Debug.Log("4 is resetting");
+        yield return new WaitForSecondsRealtime(3);
+        if (stateFlag) {
+            ghostState = GhostState.Normal;
         }
+        stateFlag = true;
     }
 
     void TeleportGhost(Vector3 pos, Vector2Int mapCoord) {
@@ -204,7 +229,7 @@ public class GhostController : MonoBehaviour {
         animator.SetBool("isRecovering", false);
 
 
-        if (!(animator.GetBool("isDead") || animator.GetBool("isScared") || animator.GetBool("isRecovering"))) {
+        if (!(ghostState == GhostState.Scared || ghostState == GhostState.Dead || ghostState == GhostState.Recovering)) {
             if (!uIManager.canPlay) {
                 animator.SetBool("isMoving", false);
             } else {
@@ -225,6 +250,14 @@ public class GhostController : MonoBehaviour {
 
             if (direction == "down") {
                 animator.SetBool("isDown", true);
+            }
+        } else {
+            if (ghostState == GhostState.Scared) {
+                animator.SetBool("isScared", true);
+            }
+            
+            if (ghostState == GhostState.Recovering) {
+                animator.SetBool("isRecovering", true);
             }
         }
     }
