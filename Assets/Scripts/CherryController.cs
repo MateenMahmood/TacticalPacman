@@ -37,11 +37,13 @@ public class CherryController : MonoBehaviour
             doesExist = true;
         }
 
-        if (doesExist) {
-            tweener.AddTween(cherryClone.transform, cherryClone.transform.position, endPos, 0.1f);
-            if (cherryClone.transform.position.x >= endPos.x) {
-                doesExist = false;
-                Destroy(cherryClone);
+        if (cherryClone != null) {
+            if (doesExist) {
+                tweener.AddTween(cherryClone.transform, cherryClone.transform.position, endPos, 0.1f);
+                if (cherryClone.transform.position.x >= endPos.x) {
+                    doesExist = false;
+                    Destroy(cherryClone);
+                }
             }
         }
     }

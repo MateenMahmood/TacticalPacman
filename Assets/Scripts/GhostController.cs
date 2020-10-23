@@ -69,6 +69,11 @@ public class GhostController : MonoBehaviour {
     #region Ghost Information
     public GhostState ghostState;
     bool stateFlag;
+    bool canScare;
+    #endregion
+
+    #region Audio Information
+    SoundManager soundManager;
     #endregion
 
     void Start() {
@@ -78,6 +83,7 @@ public class GhostController : MonoBehaviour {
         playerController = player.GetComponent<PacStudentController>();
         tweener = gameObject.GetComponent<Tweener>();
         animator = gameObject.GetComponent<Animator>();
+        soundManager = GameObject.FindGameObjectWithTag("managers").GetComponentInChildren<SoundManager>();
         #endregion
         
         #region Initial Values
@@ -91,6 +97,7 @@ public class GhostController : MonoBehaviour {
         prevPos = transform.position;
         ghostState = GhostState.Normal;
         stateFlag = true;
+        canScare = true;
         #endregion
 
         #region mapPos
@@ -110,10 +117,22 @@ public class GhostController : MonoBehaviour {
     }
 
     void Update() {
-        if (uIManager.canPlay && playerController.playerState != PlayerState.Dead) {
-            if (!tweener.TweenExists(transform)) {
+        HandleLeave();
+        if (ghostState == GhostState.Scared || ghostState == GhostState.Recovering) {
+            soundManager.isScared = true;
+        } else {
+            soundManager.isScared = false;
+        }
 
-                HandleState();
+        if (ghostState == GhostState.Dead) {
+            soundManager.isDead = true;
+        } else {
+            soundManager.isDead = false;
+        }
+        ghostDead();
+        if (uIManager.canPlay && playerController.playerState != PlayerState.Dead) {
+            HandleState();
+            if (!tweener.TweenExists(transform) && stateFlag) {
                 
                 if (inMovement) {
 
@@ -179,7 +198,21 @@ public class GhostController : MonoBehaviour {
                     }
                 }
             }
-            UpdateAnims(direction);
+        }
+        UpdateAnims(direction);
+    }
+
+    void HandleLeave() {
+        if (ghostState != GhostState.Dead && (mapPos.x < 12 || mapPos.x > 16)) {
+            levelMap[12, 13] = 4;
+            levelMap[12, 14] = 4;
+            levelMap[16, 13] = 4;
+            levelMap[16, 14] = 4;
+        } else {
+            levelMap[12, 13] = 0;
+            levelMap[12, 14] = 0;
+            levelMap[16, 13] = 0;
+            levelMap[16, 14] = 0;
         }
     }
 
@@ -195,6 +228,19 @@ public class GhostController : MonoBehaviour {
         stateFlag = false;
     }
 
+    void ghostDead() {
+        if (!stateFlag) {
+            if (!tweener.TweenExists(transform)) {
+                tweener.AddTween(transform, transform.position, new Vector3(4.16f, -4.48f, 0), 0.2f);
+            }
+            if (Vector3.Distance(transform.position, new Vector3(4.16f, -4.48f, 0)) < 0.15f) {
+                stateFlag = true;
+                mapPos = new Vector2Int(14, 13);
+                transform.position = new Vector3(4.16f, -4.48f, 0);
+            }
+        }
+    }
+
     IEnumerator CycleState() {
         if (stateFlag) {
             ghostState = GhostState.Scared;
@@ -202,12 +248,17 @@ public class GhostController : MonoBehaviour {
         yield return new WaitForSecondsRealtime(7);
         if (stateFlag) {
             ghostState = GhostState.Recovering;
+            if (ghostState == GhostState.Recovering) {
+                animator.SetBool("isRecovering", true);
+            }
+            Debug.Log("Ghosts are recovering");
         }
         yield return new WaitForSecondsRealtime(3);
         if (stateFlag) {
             ghostState = GhostState.Normal;
         }
         stateFlag = true;
+        canScare = true;
     }
 
     void TeleportGhost(Vector3 pos, Vector2Int mapCoord) {
@@ -229,7 +280,7 @@ public class GhostController : MonoBehaviour {
         animator.SetBool("isRecovering", false);
 
 
-        if (!(ghostState == GhostState.Scared || ghostState == GhostState.Dead || ghostState == GhostState.Recovering)) {
+        if (ghostState == GhostState.Normal) {
             if (!uIManager.canPlay) {
                 animator.SetBool("isMoving", false);
             } else {
@@ -255,9 +306,9 @@ public class GhostController : MonoBehaviour {
             if (ghostState == GhostState.Scared) {
                 animator.SetBool("isScared", true);
             }
-            
-            if (ghostState == GhostState.Recovering) {
-                animator.SetBool("isRecovering", true);
+
+            if (ghostState == GhostState.Dead) {
+                animator.SetBool("isDead", true);
             }
         }
     }
@@ -291,26 +342,28 @@ public class GhostController : MonoBehaviour {
     }
 
     void SetMapPos(string direction) {
-        endPos = transform.position;
+        if (ghostState != GhostState.Dead) {
+            endPos = transform.position;
 
-        if (direction.Equals("right")) {
-            mapPos.y += 1;
-            endPos.x += 0.32f;
-        }
+            if (direction.Equals("right")) {
+                mapPos.y += 1;
+                endPos.x += 0.32f;
+            }
 
-        if (direction.Equals("left")) {
-            mapPos.y -= 1;
-            endPos.x -= 0.32f;
-        }
+            if (direction.Equals("left")) {
+                mapPos.y -= 1;
+                endPos.x -= 0.32f;
+            }
 
-        if (direction.Equals("up")) {
-            mapPos.x -= 1;
-            endPos.y += 0.32f;
-        }
+            if (direction.Equals("up")) {
+                mapPos.x -= 1;
+                endPos.y += 0.32f;
+            }
 
-        if (direction.Equals("down")) {
-            mapPos.x += 1;
-            endPos.y -= 0.32f;
+            if (direction.Equals("down")) {
+                mapPos.x += 1;
+                endPos.y -= 0.32f;
+            }
         }
     }
 
@@ -421,6 +474,12 @@ public class GhostController : MonoBehaviour {
             return "up";
         }
         if (mapPos.x == 13 && mapPos.y == 12) {
+            return "right";
+        }
+        if (mapPos.x == 13 && mapPos.y == 11) {
+            return "up";
+        }
+        if (mapPos.x == 12 && mapPos.y == 11) {
             return "up";
         }
 

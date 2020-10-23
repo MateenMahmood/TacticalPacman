@@ -6,12 +6,20 @@ using UnityEngine.SceneManagement;
 public class SoundManager : MonoBehaviour
 {
     // All Serialize Fields should be set to as null to stop warning
-    [SerializeField] private AudioSource startMusic = null;
-    [SerializeField] private AudioSource mainMusic = null;
+    [SerializeField] private AudioSource audioSource = null;
+    [SerializeField] List<AudioClip> soundClips = null;
     int sceneIndex;
+    public bool isDead;
+    public bool isScared;
+    bool scaredTrigger;
+    bool deadTrigger;
 
     void Start() {
         sceneIndex = SceneManager.GetActiveScene().buildIndex;
+        isDead = false;
+        isScared = false;
+        scaredTrigger = true;
+        deadTrigger = true;
     }
 
     void Update() {
@@ -19,23 +27,49 @@ public class SoundManager : MonoBehaviour
 
         if (sceneIndex == 0) {
 
-            if (!startMusic.loop) {
-                startMusic.loop = true;
+            audioSource.clip = soundClips[0];
+
+            if (!audioSource.loop) {
+                audioSource.loop = true;
             }
 
-            if (!startMusic.isPlaying) {
-                startMusic.Play();
+            if (!audioSource.isPlaying) {
+                audioSource.Play();
             }
         }
 
         if (sceneIndex == 1) {
-            
-            if (startMusic.loop) {
-                startMusic.loop = false;
+
+            if (!isScared && ! isDead) {
+                audioSource.clip = soundClips[1];
             }
 
-            if (!startMusic.isPlaying && !mainMusic.isPlaying) {
-                mainMusic.Play();
+            if (isScared && !isDead) {
+                if (scaredTrigger) {
+                    if (audioSource.isPlaying) {
+                        audioSource.Stop();
+                        audioSource.clip = soundClips[2];
+                        scaredTrigger = false;       
+                    }
+                }
+            } else {
+                scaredTrigger = true;
+            }
+
+            if (isDead) {
+                if (deadTrigger) {
+                    if (audioSource.isPlaying) {
+                        audioSource.Stop();
+                        audioSource.clip = soundClips[3];
+                        deadTrigger = false;       
+                    }
+                }
+            } else {
+                deadTrigger = true;
+            }
+
+            if (!audioSource.isPlaying) {
+                audioSource.Play();
             }
         }
     }

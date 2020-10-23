@@ -224,6 +224,7 @@ public class PacStudentController : MonoBehaviour
                     GhostController tempController = hit2D.collider.GetComponent<GhostController>();
                     if (tempController.ghostState != GhostState.Dead) {
                         Debug.Log("Player Reporting Ghost Kill");
+                        localScore += 300;
                         tempController.HandleDeath();
                     }
                 }
